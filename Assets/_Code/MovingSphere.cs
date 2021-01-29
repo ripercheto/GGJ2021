@@ -167,8 +167,10 @@ public class MovingSphere : MonoBehaviour
 
 	void AdjustVelocity()
 	{
-		Vector3 xAxis = ProjectOnContactPlane(Vector3.right).normalized;
-		Vector3 zAxis = ProjectOnContactPlane(Vector3.forward).normalized;
+		var camTransform = Game.Cam.transform;
+
+		Vector3 xAxis = ProjectOnContactPlane(camTransform.right).normalized;
+		Vector3 zAxis = ProjectOnContactPlane(camTransform.forward).normalized;
 
 		float currentX = Vector3.Dot(velocity, xAxis);
 		float currentZ = Vector3.Dot(velocity, zAxis);

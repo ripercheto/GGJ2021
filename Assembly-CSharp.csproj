@@ -68,6 +68,7 @@
     <Compile Include="Assets\_Code\CameraController.cs" />
     <Compile Include="Assets\_Code\Game.cs" />
     <Compile Include="Assets\_Code\GameSettings.cs" />
+    <Compile Include="Assets\_Code\MouseLook.cs" />
     <Compile Include="Assets\_Code\MovingSphere.cs" />
     <Compile Include="Assets\_Code\Phy.cs" />
     <Compile Include="Assets\_Code\TraumaShake.cs" />
