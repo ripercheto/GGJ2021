@@ -147,8 +147,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8326947}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.919}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
+  m_LocalScale: {x: 0.14438812, y: 0.11547005, z: 1}
   m_Children: []
   m_Father: {fileID: 1760591127}
   m_RootOrder: 0
@@ -511,7 +511,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1585122785
+--- !u!84 &1479906682
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -717,7 +717,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 1585122785}
+  m_TargetTexture: {fileID: 1479906682}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -831,10 +831,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e906a1f6d7de8ff4fbdf68cb2c5862c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownCamera: {fileID: 1760591132}
   viewCam: {fileID: 1687258584}
-  tex: {fileID: 1585122785}
+  tex: {fileID: 1479906682}
   viewMat: {fileID: 2100000, guid: 3da59238b7ad5d442ab72420701b607a, type: 2}
   scaleFactor: 4
+  renderTarget: {fileID: 8326948}
+  camDistance: 0.1
 --- !u!114 &1760591130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -889,8 +892,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 0.1
   field of view: 60
   orthographic: 0
   orthographic size: 5

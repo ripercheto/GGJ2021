@@ -12,12 +12,13 @@ public class RenderCamera : MonoBehaviour
     [Min(4)]
     public float scaleFactor = 4;
     public Transform renderTarget;
+    [Min(0.1f)]
+    public float camDistance = 10;
     private float lastScaleFactor;
 
     // Start is called before the first frame update
     void Awake()
     {
-        view = tex;
         CreateRT();
     }
 
@@ -39,7 +40,7 @@ public class RenderCamera : MonoBehaviour
         viewCam.targetTexture = tex;
         viewMat.SetTexture("_MainTex", tex);
 
-        float camDistance = 10; // distance on the local z axis of the camera (i.e. the look at direction)
+        // distance on the local z axis of the camera (i.e. the look at direction)
         Vector3[] corners = new Vector3[4]; // will hold the result
 
         ownCamera.CalculateFrustumCorners(new Rect(0, 0, 1, 1), camDistance, Camera.MonoOrStereoscopicEye.Mono, corners);
@@ -47,7 +48,9 @@ public class RenderCamera : MonoBehaviour
         float zSize = (corners[0] - corners[1]).magnitude;
         float xSize = (corners[1] - corners[2]).magnitude;
 
+        renderTarget.localPosition = new Vector3(0, 0, camDistance);
         renderTarget.localScale = new Vector3(xSize, zSize, 1);
+        ownCamera.farClipPlane = camDistance;
     }
 
     // Update is called once per frame
