@@ -27,11 +27,18 @@ public class CameraController : MonoBehaviour
     CameraSettings Settings => Game.Settings.camera;
 
     public TraumaShake shake;
+    public Camera cam;
+    public Transform target;
 
     private void Awake()
     {
         //player.onHit.AddListener(OnPlayerHit);
         //player.onHitEnemy.AddListener(OnHitEnemy);
+    }
+
+    private void Update()
+    {
+        transform.position = target.position;
     }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
