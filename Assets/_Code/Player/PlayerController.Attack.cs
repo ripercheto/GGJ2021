@@ -6,19 +6,26 @@ partial class PlayerController
 {
     [Header("Attack")]
     public TriggerArea attackTriggerArea;
+    public float attackTriggerDirOffset = 1;
 
     public float attackMovementDistance = 3;
     public float attackDuration = 0.1f;
 
     private float attackTimer;
     private Coroutine attackRoutine;
-    private List<EnemyBase> hitEnemies;
+    private List<EnemyBase> hitEnemies = new List<EnemyBase>();
 
     private Vector3 attackDir;
     private Quaternion attackRotation;
+    private Vector3 triggerAreaOffset;
 
-    private bool CanAttack => attackTimer <= 0;
     private bool isAttacking;
+    private bool CanAttack => attackTimer <= 0;
+
+    void InitAttack()
+    {
+        triggerAreaOffset = attackTriggerArea.transform.localPosition;
+    }
 
     void HandleAttackCooldown()
     {
@@ -39,32 +46,33 @@ partial class PlayerController
         {
             StopCoroutine(attackRoutine);
         }
-        attackRoutine = StartCoroutine(_Attack(dir));
+        attackRoutine = StartCoroutine(_Attack(dir, null));
     }
 
     void PrepareAttack(Vector3 dir)
     {
         isAttacking = true;
         attackDir = dir;
+
         //prepare attack rotation
         lastLookDir = attackDir;
         modelPivot.localRotation = attackRotation = lookRot = targetRot = Quaternion.LookRotation(attackDir);
 
-        //attackTriggerArea.gameObject.SetActive(true);
-        attackTriggerArea.transform.localPosition = attackDir;
+        attackTriggerArea.gameObject.SetActive(true);
+        attackTriggerArea.transform.localPosition = triggerAreaOffset + attackDir * attackTriggerDirOffset;
         attackTriggerArea.transform.rotation = attackRotation;
 
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
 
-    private IEnumerator _Attack(Vector3 dir)
+    private IEnumerator _Attack(Vector3 dir, bool? ass = false)
     {
         PrepareAttack(dir);
 
         var startPos = transform.position;
         var targetPos = startPos + dir * attackMovementDistance;
         var t = 0f;
-        hitEnemies = new List<EnemyBase>();
+        hitEnemies.Clear();
         while (t < attackDuration)
         {
             t += Time.deltaTime;
@@ -80,7 +88,9 @@ partial class PlayerController
                     continue;
                 }
 
-                item.OnHit(transform.position, stats.damage);
+                var force = (item.transform.position - transform.position).normalized * attackHitForce;
+                item.OnHit(force, stats.damage);
+                onEnemyHit.Invoke();
                 hitEnemies.Add(item);
             }
 
@@ -91,7 +101,7 @@ partial class PlayerController
 
     void EnadAttack()
     {
-        //attackTriggerArea.gameObject.SetActive(false);
+        attackTriggerArea.gameObject.SetActive(false);
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
 
         attackTimer = stats.attackRate;

@@ -8,29 +8,29 @@ partial class Game
     public static PlayerController Player => PlayerController.instance;
 }
 
-public partial class PlayerController : MonoBehaviour
+public partial class PlayerController : Pawn
 {
     public static PlayerController instance;
 
-    [Header("Stats")]
-    public Stats stats;
+    [Header("Damage")]
     public float invulnerabilityTime = 1f;
 
     public UnityEvent onPlayerHit = new UnityEvent();
-    private float currentHealth;
+    public UnityEvent onEnemyHit = new UnityEvent();
     private float vulnerableTime;
 
-    private bool HasHealth => currentHealth > 0;
     private bool IsVulnerable => Time.time > vulnerableTime;
 
-    void Awake()
+
+    protected override void Awake()
     {
         instance = this;
 
-        currentHealth = stats.health;
+        base.Awake();
 
-        InitMovement();
         InitInput();
+        InitMovement();
+        InitAttack();
     }
 
     void FixedUpdate()
@@ -50,7 +50,7 @@ public partial class PlayerController : MonoBehaviour
         HandleRotationUpdate();
     }
 
-    public void TakeDamage(EnemyBase attacker)
+    public override void OnHit(Vector3 from, float damage)
     {
         if (!IsVulnerable)
         {
@@ -64,8 +64,9 @@ public partial class PlayerController : MonoBehaviour
             return;
         }
 
+        base.OnHit(from, damage);
+
         vulnerableTime = Time.time + invulnerabilityTime;
-        currentHealth -= attacker.stats.damage;
         onPlayerHit.Invoke();
     }
 }

@@ -12,8 +12,6 @@ partial class PlayerController
     [SerializeField, Range(0, 90)]
     float maxGroundAngle = 25f;
 
-    Rigidbody body;
-
     Vector3 velocity, desiredVelocity;
 
     Vector3 contactNormal;
@@ -22,18 +20,11 @@ partial class PlayerController
 
     bool OnGround => groundContactCount > 0;
 
-
     float minGroundDotProduct;
-
-    void OnValidate()
-    {
-        minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-    }
 
     void InitMovement()
     {
-        body = GetComponent<Rigidbody>();
-        OnValidate();
+        minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
         //rotation
         targetRot = lookRot = Quaternion.identity;
@@ -139,7 +130,7 @@ partial class PlayerController
 
     void HandleModelTargetRot()
     {
-        var maxSpeedFraction = stats.movementSpeed * 0.8f;
+        var maxSpeedFraction = stats.movementSpeed * 0.4f;
         var isVelAboveFraction = body.velocity.magnitude > maxSpeedFraction;
 
         if (playerInput.magnitude > 0f && isVelAboveFraction)

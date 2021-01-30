@@ -41,13 +41,12 @@ public class CameraController : MonoBehaviour
         offset = dir * distanceFromPlayer;
 
         Game.Player.onPlayerHit.AddListener(OnPlayerHit);
-        //player.onHitEnemy.AddListener(OnHitEnemy);
+        Game.Player.onEnemyHit.AddListener(OnHitEnemy);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         transform.position = Vector3.Lerp(transform.position, target.position + offset, 10 * Time.deltaTime);
-
     }
 
     void OnPlayerHit()

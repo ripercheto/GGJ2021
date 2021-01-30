@@ -128,7 +128,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7040582324132838411}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &499922001
+--- !u!84 &390977754
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,8 +141,8 @@ RenderTexture:
   m_ForcedFallbackFormat: 4
   m_DownscaleFallback: 0
   serializedVersion: 3
-  m_Width: 240
-  m_Height: 135
+  m_Width: 320
+  m_Height: 180
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthFormat: 0
@@ -2334,6 +2334,11 @@ PrefabInstance:
       propertyPath: viewCam
       value: 
       objectReference: {fileID: 1687258584}
+    - target: {fileID: 7040582324116481424, guid: 4b45be2a31efdfd4da9ced67d577eb78,
+        type: 3}
+      propertyPath: attackHitForce
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7040582324116481425, guid: 4b45be2a31efdfd4da9ced67d577eb78,
         type: 3}
       propertyPath: m_RootOrder
