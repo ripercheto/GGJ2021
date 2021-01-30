@@ -2,11 +2,11 @@
 
 partial class PlayerController 
 {
+    [Header("Movement")]
     [SerializeField, Range(0f, 100f)]
-    float maxSpeed = 10f;
-
+    float maxAcceleration = 10f;
     [SerializeField, Range(0f, 100f)]
-    float maxAcceleration = 10f, maxAirAcceleration = 1f;
+    float maxAirAcceleration = 1f;
 
     [SerializeField, Range(0, 90)]
     float maxGroundAngle = 25f;

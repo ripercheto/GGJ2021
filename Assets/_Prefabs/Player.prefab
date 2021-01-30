@@ -154,14 +154,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackTriggerArea: {fileID: 1400550438597604485}
-  attackDamage: 1
-  attackCooldown: 0.5
   attackMovement: 2
   attackDuration: 0.1
-  maxSpeed: 10
   maxAcceleration: 100
   maxAirAcceleration: 100
   maxGroundAngle: 25
+  stats:
+    health: 3
+    damage: 1
+    attackRate: 0.5
+    movementSpeed: 10
 --- !u!54 &7040582324116481431
 Rigidbody:
   m_ObjectHideFlags: 0

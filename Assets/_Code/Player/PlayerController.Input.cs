@@ -24,11 +24,16 @@ partial class PlayerController
         playerInput.y = Input.GetAxis("Vertical");
         playerInput = Vector2.ClampMagnitude(playerInput, 1f);
 
-        desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+        desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * stats.movementSpeed;
     }
 
     private void HandleMouseInput()
     {
+        if (!CanAttack)
+        {
+            return;
+        }
+
         if (!Input.GetMouseButtonDown(0))
         {
             return;

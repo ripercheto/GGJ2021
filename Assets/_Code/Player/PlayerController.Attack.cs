@@ -4,10 +4,9 @@ using UnityEngine;
 
 partial class PlayerController
 {
+    [Header("Attack")]
     public TriggerArea attackTriggerArea;
 
-    public float attackDamage = 1;
-    public float attackCooldown = 1;
     public float attackMovement = 2;
     public float attackDuration = 0.1f;
 
@@ -68,7 +67,7 @@ partial class PlayerController
                     continue;
                 }
 
-                item.OnHit(transform.position, attackDamage);
+                item.OnHit(transform.position, stats.damage);
                 hitEnemies.Add(item);
             }
 
@@ -80,7 +79,7 @@ partial class PlayerController
     void EnadAttack()
     {
         attackRoutine = null;
-        attackTimer = attackCooldown;
+        attackTimer = stats.attackRate;
         attackTriggerArea.gameObject.SetActive(false);
     }
 }
