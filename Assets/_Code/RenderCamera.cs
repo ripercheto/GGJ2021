@@ -32,6 +32,8 @@ public class RenderCamera : MonoBehaviour
             return;
         }
 
+
+
         var x = Mathf.RoundToInt(Screen.width / scaleFactor);
         var y = Mathf.RoundToInt(Screen.height / scaleFactor);
 

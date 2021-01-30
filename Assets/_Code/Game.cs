@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[ExecuteInEditMode]
 public partial class Game : MonoBehaviour
 {
     public static Game Instance;
@@ -11,10 +12,21 @@ public partial class Game : MonoBehaviour
     [SerializeField]
     private GameSettings settings;
 
+    public float dungeonTextureScale = 0.1f;
+
     private void Awake()
     {
         Instance = this;
+
+        Shader.SetGlobalFloat("Vector1_71B9E5F1", dungeonTextureScale);
     }
+    private void Update()
+    {
+#if UNITY_EDITOR
+        Shader.SetGlobalFloat("Vector1_71B9E5F1", dungeonTextureScale);
+#endif
+    }
+
 }
 #if UNITY_EDITOR
 public static class Reload
