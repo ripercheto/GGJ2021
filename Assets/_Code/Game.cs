@@ -40,6 +40,15 @@ public static class Reload
         }
         var scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
+        ClearConsole();
+    }
+
+    static void ClearConsole()
+    {
+        var assembly = System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.SceneView));
+        var type = assembly.GetType("UnityEditor.LogEntries");
+        var method = type.GetMethod("Clear");
+        method.Invoke(new object(), null);
     }
 }
 #endif

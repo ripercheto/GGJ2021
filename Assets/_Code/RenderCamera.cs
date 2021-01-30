@@ -11,6 +11,8 @@ public class RenderCamera : MonoBehaviour
     public Camera viewCam;
     public RenderTexture tex;
     public Material viewMat;
+
+
     [Min(4)]
     public float scaleFactor = 4;
     public Transform renderTarget;
@@ -32,10 +34,15 @@ public class RenderCamera : MonoBehaviour
             return;
         }
 
+        var w = Screen.width;
+        var h = Screen.height;
+        var bigger = Mathf.Max(w, h);
+        float smaller = Mathf.Min(w, h);
+        var textureWidth = 1920f / scaleFactor;
+        var textureHeight = (smaller / bigger) * textureWidth;
 
-
-        var x = Mathf.RoundToInt(Screen.width / scaleFactor);
-        var y = Mathf.RoundToInt(Screen.height / scaleFactor);
+        var x = Mathf.RoundToInt(textureWidth);
+        var y = Mathf.RoundToInt(textureHeight);
 
         tex = new RenderTexture(x, y, 0)
         {

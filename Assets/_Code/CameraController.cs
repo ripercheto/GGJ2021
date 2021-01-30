@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
 
         offset = dir * distanceFromPlayer;
 
-        //player.onHit.AddListener(OnPlayerHit);
+        Game.Player.onPlayerHit.AddListener(OnPlayerHit);
         //player.onHitEnemy.AddListener(OnHitEnemy);
     }
 
