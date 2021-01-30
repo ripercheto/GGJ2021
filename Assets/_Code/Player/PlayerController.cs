@@ -35,11 +35,6 @@ public partial class PlayerController : Pawn
 
     void FixedUpdate()
     {
-        if (isAttacking)
-        {
-            ClearState();
-            return;
-        }
         HandleMovement();
     }
 

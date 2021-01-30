@@ -46,7 +46,7 @@ partial class PlayerController
         {
             StopCoroutine(attackRoutine);
         }
-        attackRoutine = StartCoroutine(_Attack(dir, null));
+        attackRoutine = StartCoroutine(_Attack(dir));
     }
 
     void PrepareAttack(Vector3 dir)
@@ -65,20 +65,16 @@ partial class PlayerController
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
 
-    private IEnumerator _Attack(Vector3 dir, bool? ass = false)
+    private IEnumerator _Attack(Vector3 dir)
     {
         PrepareAttack(dir);
 
-        var startPos = transform.position;
-        var targetPos = startPos + dir * attackMovementDistance;
         var t = 0f;
         hitEnemies.Clear();
         while (t < attackDuration)
         {
             t += Time.deltaTime;
-            var a = t / attackDuration;
-            var newPos = Vector3.Lerp(startPos, targetPos, a);
-            body.MovePosition(newPos);
+            body.AddForce(dir * attackMovementDistance, ForceMode.VelocityChange);
 
             var enemiesInTrigger = attackTriggerArea.InTrigger;
             foreach (var item in enemiesInTrigger)
@@ -88,7 +84,8 @@ partial class PlayerController
                     continue;
                 }
 
-                var force = (item.transform.position - transform.position).normalized * attackHitForce;
+                var dirToEnemy = (item.transform.position - transform.position).normalized;
+                var force = (dirToEnemy + dir).normalized * stats.knockbackForce;
                 item.OnHit(force, stats.damage);
                 onEnemyHit.Invoke();
                 hitEnemies.Add(item);

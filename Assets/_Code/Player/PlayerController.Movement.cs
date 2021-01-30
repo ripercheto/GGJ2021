@@ -19,7 +19,7 @@ partial class PlayerController
     int groundContactCount;
 
     bool OnGround => groundContactCount > 0;
-
+    bool ShouldUpdateVelocity => !isAttacking && !IsKnockedBack;
     float minGroundDotProduct;
 
     void InitMovement()
@@ -32,6 +32,11 @@ partial class PlayerController
 
     private void HandleMovement()
     {
+        if (!ShouldUpdateVelocity)
+        {
+            return;
+        }
+
         UpdateState();
         AdjustVelocity();
         body.velocity = velocity;
@@ -130,7 +135,7 @@ partial class PlayerController
 
     void HandleModelTargetRot()
     {
-        var maxSpeedFraction = stats.movementSpeed * 0.4f;
+        var maxSpeedFraction = stats.movementSpeed * 0.1f;
         var isVelAboveFraction = body.velocity.magnitude > maxSpeedFraction;
 
         if (playerInput.magnitude > 0f && isVelAboveFraction)
