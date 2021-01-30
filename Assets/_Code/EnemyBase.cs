@@ -14,6 +14,10 @@ public class EnemyBase : Pawn
     public float attackRadius = 45f;
     public float attackAnticipationTime = 0.15f;
 
+    private Vector3 lastHitDir;
+
+    protected override Quaternion RecoverRotation => Quaternion.LookRotation(lastHitDir.normalized);
+
     protected override void Awake()
     {
         base.Awake();
@@ -106,6 +110,12 @@ public class EnemyBase : Pawn
         }
     }
     #endregion
+
+    public override void OnHit(Vector3 force, float damage)
+    {
+        base.OnHit(force, damage);
+        lastHitDir = force.normalized;
+    }
 
     protected override void OnDeath()
     {

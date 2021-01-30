@@ -21,6 +21,7 @@ public abstract class Pawn : MonoBehaviour
     protected bool HasHealth => currentHealth > 0;
     protected bool CanAttack => !isAttacking && attackTimer <= 0;
     protected bool IsKnockedBack { get; private set; }
+    protected abstract Quaternion RecoverRotation { get; }
 
     protected virtual void Awake()
     {
@@ -48,11 +49,17 @@ public abstract class Pawn : MonoBehaviour
     }
     protected abstract void OnDeath();
     #endregion
+
     #region Knockback
     protected virtual void StartKnockBack()
     {
         IsKnockedBack = true;
         body.constraints = RigidbodyConstraints.None;
+        if (isAttacking && attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            EndAttack();
+        }
     }
     private IEnumerator _Knockback(Vector3 force)
     {
@@ -81,13 +88,12 @@ public abstract class Pawn : MonoBehaviour
     private IEnumerator _Recover(Vector3 dir)
     {
         var startRot = transform.rotation;
-        var endRot = Quaternion.LookRotation(dir.normalized);
         var t = 0f;
         while (t < stats.knockbackRecoveryTime)
         {
             t += Time.deltaTime;
             var a = t / stats.knockbackRecoveryTime;
-            transform.rotation = Quaternion.Lerp(startRot, endRot, a);
+            transform.rotation = Quaternion.Lerp(startRot, RecoverRotation, a);
             yield return null;
         }
     }
@@ -98,6 +104,7 @@ public abstract class Pawn : MonoBehaviour
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
     #endregion
+
     #region Dealing Damage
     protected virtual void DoAttack(Vector3 dir)
     {

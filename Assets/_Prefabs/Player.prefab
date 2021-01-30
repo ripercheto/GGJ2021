@@ -425,7 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    health: 3
+    health: 10
     damage: 1
     attackRate: 0.5
     movementSpeed: 10
@@ -437,14 +437,15 @@ MonoBehaviour:
   animator: {fileID: 0}
   attackTriggerArea: {fileID: 1400550438597604485}
   attackTriggerDirOffset: 1
-  attackMovementDistance: 20
+  attackMovementForce: 20
   attackDuration: 0.1
   maxAcceleration: 100
   maxAirAcceleration: 100
   maxGroundAngle: 25
   modelPivot: {fileID: 4581396597630355975}
-  tiltAmount: 0.3
+  tiltAmount: 0.1
   invulnerabilityTime: 1
+  coll: {fileID: 7040582324894593849}
   onPlayerHit:
     m_PersistentCalls:
       m_Calls: []

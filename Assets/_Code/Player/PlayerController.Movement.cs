@@ -19,7 +19,7 @@ partial class PlayerController
     int groundContactCount;
 
     bool OnGround => groundContactCount > 0;
-    bool ShouldUpdateVelocity => !isAttacking && !IsKnockedBack;
+    bool HasPlayerLostInput => isAttacking || IsKnockedBack;
     float minGroundDotProduct;
 
     void InitMovement()
@@ -27,7 +27,7 @@ partial class PlayerController
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
         //rotation
-        targetRot = lookRot = Quaternion.identity;
+        targetRot = Quaternion.identity;
     }
 
     private void HandleMovement()
@@ -38,7 +38,7 @@ partial class PlayerController
             return;
         }
 
-        if (!ShouldUpdateVelocity)
+        if (HasPlayerLostInput)
         {
             return;
         }
@@ -124,13 +124,18 @@ partial class PlayerController
     public Transform modelPivot;
     [Range(0, 1)]
     public float tiltAmount;
-
     private Vector3 lastLookDir;
-    private Quaternion lookRot;
+    private Quaternion lastLookRot;
+
+    private Quaternion Rotation
+    {
+        get => modelPivot.rotation;
+        set => modelPivot.rotation = value;
+    }
 
     private void HandleRotationUpdate()
     {
-        if (isAttacking)
+        if (HasPlayerLostInput)
         {
             return;
         }
@@ -142,19 +147,17 @@ partial class PlayerController
     {
         var maxSpeedFraction = stats.movementSpeed * 0.1f;
         var isVelAboveFraction = body.velocity.magnitude > maxSpeedFraction;
-
         if (playerInput.magnitude > 0f && isVelAboveFraction)
         {
             lastLookDir = body.velocity.normalized;
-            lookRot = Quaternion.LookRotation(lastLookDir);
+            lastLookRot = Quaternion.LookRotation(lastLookDir);
         }
-
-        targetRot = isVelAboveFraction ? Quaternion.LookRotation(lastLookDir + Vector3.down * tiltAmount) : lookRot;
+        targetRot = isVelAboveFraction ? Quaternion.LookRotation(lastLookDir + Vector3.down * tiltAmount) : lastLookRot;
     }
 
     private void RotateModelTowardsTarget()
     {
-        modelPivot.localRotation = Quaternion.Lerp(modelPivot.localRotation, targetRot, 20 * Time.deltaTime);
+        Rotation = Quaternion.Lerp(Rotation, targetRot, stats.turnFactor * Time.deltaTime);
     }
     #endregion
 }

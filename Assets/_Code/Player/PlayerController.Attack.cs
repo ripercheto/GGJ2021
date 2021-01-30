@@ -8,7 +8,7 @@ partial class PlayerController
     public TriggerArea attackTriggerArea;
     public float attackTriggerDirOffset = 1;
 
-    public float attackMovementDistance = 3;
+    public float attackMovementForce = 20;
     public float attackDuration = 0.1f;
 
     private List<EnemyBase> hitEnemies = new List<EnemyBase>();
@@ -16,6 +16,8 @@ partial class PlayerController
     private Vector3 attackDir;
     private Quaternion attackRotation;
     private Vector3 triggerAreaOffset;
+
+    protected override Quaternion RecoverRotation => Quaternion.identity;
 
     void InitAttack()
     {
@@ -25,11 +27,10 @@ partial class PlayerController
     protected override void PrepareAttack(Vector3 dir)
     {
         base.PrepareAttack(dir);
-        attackDir = dir * attackMovementDistance;
+        attackDir = dir * attackMovementForce;
 
         //prepare attack rotation
-        lastLookDir = dir;
-        modelPivot.localRotation = attackRotation = lookRot = targetRot = Quaternion.LookRotation(dir);
+        Rotation = attackRotation = lastLookRot = targetRot = Quaternion.LookRotation(dir);
 
         attackTriggerArea.gameObject.SetActive(true);
         attackTriggerArea.transform.localPosition = triggerAreaOffset + dir * attackTriggerDirOffset;

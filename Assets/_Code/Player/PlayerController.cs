@@ -14,19 +14,23 @@ public partial class PlayerController : Pawn
 
     [Header("Damage")]
     public float invulnerabilityTime = 1f;
+    public Collider coll;
 
     public UnityEvent onPlayerHit = new UnityEvent();
     public UnityEvent onEnemyHit = new UnityEvent();
     private float vulnerableTime;
 
-    private bool IsVulnerable => Time.time > vulnerableTime;
+    private PhysicMaterial defaultMat;
 
+    private bool IsVulnerable => Time.time > vulnerableTime;
 
     protected override void Awake()
     {
         instance = this;
 
         base.Awake();
+
+        defaultMat = coll.sharedMaterial;
 
         InitInput();
         InitMovement();
@@ -63,6 +67,18 @@ public partial class PlayerController : Pawn
 
         vulnerableTime = Time.time + invulnerabilityTime;
         onPlayerHit.Invoke();
+    }
+
+    protected override void StartKnockBack()
+    {
+        base.StartKnockBack();
+        coll.material = null;
+    }
+
+    protected override void EndKnockBack()
+    {
+        coll.material = defaultMat;
+        base.EndKnockBack();
     }
 
     protected override void OnDeath()
