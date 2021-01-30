@@ -32,6 +32,12 @@ partial class PlayerController
 
     private void HandleMovement()
     {
+        if (isAttacking)
+        {
+            body.velocity = attackDir;
+            return;
+        }
+
         if (!ShouldUpdateVelocity)
         {
             return;

@@ -64,4 +64,9 @@ public partial class PlayerController : Pawn
         vulnerableTime = Time.time + invulnerabilityTime;
         onPlayerHit.Invoke();
     }
+
+    protected override void OnDeath()
+    {
+        Debug.LogError("DEAD, FAILED TO DELIVED ITEM, GO BACK TO SHOP");
+    }
 }

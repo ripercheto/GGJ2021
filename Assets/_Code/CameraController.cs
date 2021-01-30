@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
 
     public TraumaShake shake;
     public Camera cam;
-    public Transform target;
+    public Rigidbody target;
     public float distanceFromPlayer = 10;
 
     private Vector3 offset;
@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
         Game.Player.onEnemyHit.AddListener(OnHitEnemy);
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         transform.position = Vector3.Lerp(transform.position, target.position + offset, 10 * Time.deltaTime);
     }

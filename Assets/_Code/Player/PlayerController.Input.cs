@@ -52,6 +52,6 @@ partial class PlayerController
         dir.y = 0;
         dir.Normalize();
 
-        Attack(dir);
+        DoAttack(dir);
     }
 }
