@@ -29,6 +29,9 @@ partial class PlayerController
 
     private void HandleMouseInput()
     {
+        var mousePos = RenderCamera.MousePosition;
+        var ray = Game.Cam.cam.ScreenPointToRay(mousePos);
+        Debug.DrawLine(ray.origin, ray.origin + ray.direction * 10, Color.green);
         if (!CanAttack)
         {
             return;
@@ -38,8 +41,6 @@ partial class PlayerController
         {
             return;
         }
-        var mousePos = Input.mousePosition / RenderCamera.instance.scaleFactor;
-        var ray = Game.Cam.cam.ScreenPointToRay(mousePos);
 
         if (!plane.Raycast(ray, out var enter))
         {
