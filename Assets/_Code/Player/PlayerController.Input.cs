@@ -5,6 +5,7 @@ using UnityEngine;
 partial class PlayerController
 {
     private Plane plane;
+    private Vector2 playerInput;
 
     private void InitInput()
     {
@@ -19,7 +20,6 @@ partial class PlayerController
 
     private void HandleVelocity()
     {
-        Vector2 playerInput;
         playerInput.x = Input.GetAxis("Horizontal");
         playerInput.y = Input.GetAxis("Vertical");
         playerInput = Vector2.ClampMagnitude(playerInput, 1f);

@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+partial class Game
+{
+    public static PlayerController Player => PlayerController.instance;
+}
+
 public partial class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     [Header("Stats")]
     public Stats stats;
     public float invulnerabilityTime = 1f;
@@ -18,6 +25,8 @@ public partial class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        instance = this;
+
         currentHealth = stats.health;
 
         InitMovement();
@@ -26,8 +35,9 @@ public partial class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (IsAttacking)
+        if (isAttacking)
         {
+            ClearState();
             return;
         }
         HandleMovement();
@@ -37,6 +47,7 @@ public partial class PlayerController : MonoBehaviour
     {
         HandleAttackCooldown();
         ReadInput();
+        HandleRotationUpdate();
     }
 
     public void TakeDamage(EnemyBase attacker)

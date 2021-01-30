@@ -336,7 +336,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4633072416472893078}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e906a1f6d7de8ff4fbdf68cb2c5862c5, type: 3}
   m_Name: 
@@ -345,6 +345,6 @@ MonoBehaviour:
   viewCam: {fileID: 0}
   tex: {fileID: 0}
   viewMat: {fileID: 2100000, guid: 9fc1cc9d09cdfb244afaa803d0f144ba, type: 2}
-  scaleFactor: 6
+  scaleFactor: 8
   renderTarget: {fileID: 4633072416061944996}
   camDistance: 0.1

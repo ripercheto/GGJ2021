@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
-partial class PlayerController 
+partial class PlayerController
 {
+    #region Movement
     [Header("Movement")]
     [SerializeField, Range(0f, 100f)]
     float maxAcceleration = 10f;
@@ -33,6 +34,9 @@ partial class PlayerController
     {
         body = GetComponent<Rigidbody>();
         OnValidate();
+
+        //rotation
+        targetRot = lookRot = Quaternion.identity;
     }
 
     private void HandleMovement()
@@ -42,7 +46,6 @@ partial class PlayerController
         body.velocity = velocity;
         ClearState();
     }
-
 
     void ClearState()
     {
@@ -112,4 +115,45 @@ partial class PlayerController
     {
         return vector - contactNormal * Vector3.Dot(vector, contactNormal);
     }
+    #endregion
+
+    #region Rotation
+    [Header("Rotation")]
+    public Transform modelPivot;
+    [Range(0, 1)]
+    public float tiltAmount;
+
+    private Vector3 lastLookDir;
+    private Quaternion lookRot;
+    private Quaternion targetRot;
+
+    private void HandleRotationUpdate()
+    {
+        if (isAttacking)
+        {
+            return;
+        }
+        HandleModelTargetRot();
+        RotateModelTowardsTarget();
+    }
+
+    void HandleModelTargetRot()
+    {
+        var maxSpeedFraction = stats.movementSpeed * 0.8f;
+        var isVelAboveFraction = body.velocity.magnitude > maxSpeedFraction;
+
+        if (playerInput.magnitude > 0f && isVelAboveFraction)
+        {
+            lastLookDir = body.velocity.normalized;
+            lookRot = Quaternion.LookRotation(lastLookDir);
+        }
+
+        targetRot = isVelAboveFraction ? Quaternion.LookRotation(lastLookDir + Vector3.down * tiltAmount) : lookRot;
+    }
+
+    private void RotateModelTowardsTarget()
+    {
+        modelPivot.localRotation = Quaternion.Lerp(modelPivot.localRotation, targetRot, 20 * Time.deltaTime);
+    }
+    #endregion
 }

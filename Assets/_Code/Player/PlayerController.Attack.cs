@@ -7,15 +7,18 @@ partial class PlayerController
     [Header("Attack")]
     public TriggerArea attackTriggerArea;
 
-    public float attackMovement = 2;
+    public float attackMovementDistance = 3;
     public float attackDuration = 0.1f;
 
     private float attackTimer;
     private Coroutine attackRoutine;
     private List<EnemyBase> hitEnemies;
 
+    private Vector3 attackDir;
+    private Quaternion attackRotation;
+
     private bool CanAttack => attackTimer <= 0;
-    private bool IsAttacking => attackRoutine != null;
+    private bool isAttacking;
 
     void HandleAttackCooldown()
     {
@@ -31,15 +34,25 @@ partial class PlayerController
         {
             return;
         }
+
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+        }
         attackRoutine = StartCoroutine(_Attack(dir));
     }
 
     void PrepareAttack(Vector3 dir)
     {
+        isAttacking = true;
+        attackDir = dir;
+        //prepare attack rotation
+        lastLookDir = attackDir;
+        modelPivot.localRotation = attackRotation = lookRot = targetRot = Quaternion.LookRotation(attackDir);
+
         attackTriggerArea.gameObject.SetActive(true);
-        var rot = Quaternion.LookRotation(dir);
-        attackTriggerArea.transform.rotation = rot;
-        attackTriggerArea.transform.localPosition = dir;
+        attackTriggerArea.transform.localPosition = attackDir;
+        attackTriggerArea.transform.rotation = attackRotation;
 
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
@@ -49,7 +62,7 @@ partial class PlayerController
         PrepareAttack(dir);
 
         var startPos = transform.position;
-        var targetPos = startPos + dir * attackMovement;
+        var targetPos = startPos + dir * attackMovementDistance;
         var t = 0f;
         hitEnemies = new List<EnemyBase>();
         while (t < attackDuration)
@@ -78,8 +91,12 @@ partial class PlayerController
 
     void EnadAttack()
     {
-        attackRoutine = null;
-        attackTimer = stats.attackRate;
         attackTriggerArea.gameObject.SetActive(false);
+        body.AddForce(Vector3.zero, ForceMode.VelocityChange);
+
+        attackTimer = stats.attackRate;
+
+        attackRoutine = null;
+        isAttacking = false;
     }
 }
