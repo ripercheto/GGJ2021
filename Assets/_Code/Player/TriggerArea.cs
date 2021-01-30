@@ -24,7 +24,7 @@ public class TriggerArea : MonoBehaviour
         }
     }
 
-    private List<EnemyBase> inTrigger = new List<EnemyBase>();
+    public List<EnemyBase> inTrigger = new List<EnemyBase>();
 
     private void OnTriggerEnter(Collider other)
     {
@@ -33,7 +33,7 @@ public class TriggerArea : MonoBehaviour
             return;
         }
 
-        var enemy = other.GetComponent<EnemyBase>();
+        var enemy = other.GetComponentInParent<EnemyBase>();
         if (enemy == null)
         {
             return;
@@ -49,7 +49,7 @@ public class TriggerArea : MonoBehaviour
             return;
         }
 
-        var enemy = other.GetComponent<EnemyBase>();
+        var enemy = other.GetComponentInParent<EnemyBase>();
         if (enemy == null)
         {
             return;

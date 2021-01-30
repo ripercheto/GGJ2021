@@ -50,7 +50,7 @@ partial class PlayerController
         lastLookDir = attackDir;
         modelPivot.localRotation = attackRotation = lookRot = targetRot = Quaternion.LookRotation(attackDir);
 
-        attackTriggerArea.gameObject.SetActive(true);
+        //attackTriggerArea.gameObject.SetActive(true);
         attackTriggerArea.transform.localPosition = attackDir;
         attackTriggerArea.transform.rotation = attackRotation;
 
@@ -91,7 +91,7 @@ partial class PlayerController
 
     void EnadAttack()
     {
-        attackTriggerArea.gameObject.SetActive(false);
+        //attackTriggerArea.gameObject.SetActive(false);
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
 
         attackTimer = stats.attackRate;

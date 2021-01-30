@@ -179,7 +179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8927295500340414349
 Transform:
   m_ObjectHideFlags: 0
@@ -425,7 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackTriggerArea: {fileID: 1400550438597604485}
-  attackMovement: 3
+  attackMovementDistance: 3
   attackDuration: 0.2
   maxAcceleration: 100
   maxAirAcceleration: 100
