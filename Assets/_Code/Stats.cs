@@ -10,6 +10,7 @@ public class Stats
     public float damage = 1;
     public float attackRate = 1;
     public float movementSpeed = 10;
+    public float turnFactor = 20;
 
     [Header("Knockback")]
     public float knockbackForce = 1;

@@ -13,11 +13,13 @@ public abstract class Pawn : MonoBehaviour
     protected float attackTimer;
     protected bool isAttacking;
 
+    protected Quaternion targetRot;
+
     private Coroutine attackRoutine;
     private Coroutine knockbackRoutine;
     private RigidbodyConstraints defaultConstraints;
     protected bool HasHealth => currentHealth > 0;
-    protected bool CanAttack => attackTimer <= 0;
+    protected bool CanAttack => !isAttacking && attackTimer <= 0;
     protected bool IsKnockedBack { get; private set; }
 
     protected virtual void Awake()
@@ -118,6 +120,7 @@ public abstract class Pawn : MonoBehaviour
     protected abstract IEnumerator _Attack(Vector3 dir);
     protected virtual void EndAttack()
     {
+        attackTimer = stats.attackRate;
         attackRoutine = null;
         isAttacking = false;
     }

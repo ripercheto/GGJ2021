@@ -74,8 +74,6 @@ partial class PlayerController
         attackTriggerArea.gameObject.SetActive(false);
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
 
-        attackTimer = stats.attackRate;
-
         base.EndAttack();
     }
 }

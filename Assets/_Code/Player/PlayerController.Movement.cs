@@ -127,7 +127,6 @@ partial class PlayerController
 
     private Vector3 lastLookDir;
     private Quaternion lookRot;
-    private Quaternion targetRot;
 
     private void HandleRotationUpdate()
     {

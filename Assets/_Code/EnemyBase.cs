@@ -23,13 +23,18 @@ public class EnemyBase : Pawn
 
     private void Update()
     {
+        HandleAttackCooldown();
+
         if (IsKnockedBack)
         {
             return;
         }
 
+        LookTowardsTarget();
+
         var playerPos = Game.Player.transform.position;
         var dirToPlayer = playerPos - transform.position;
+        dirToPlayer.y = 0;
         var distToPlayer = dirToPlayer.magnitude;
 
         if (distToPlayer >= detectRange)
@@ -38,7 +43,7 @@ public class EnemyBase : Pawn
         }
 
         //in sight
-        //transform.rotation = Quaternion.LookRotation(dirToPlayer);
+        targetRot = Quaternion.LookRotation(dirToPlayer);
         agent.SetDestination(playerPos);
 
         if (!CanAttack)
@@ -63,6 +68,11 @@ public class EnemyBase : Pawn
         DoAttack(dirToPlayer);
     }
 
+    private void LookTowardsTarget()
+    {
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, stats.turnFactor * Time.deltaTime);
+    }
+
     private bool IsPlayerInRange(Vector3 dir)
     {
         var distToPlayer = dir.magnitude;
@@ -80,6 +90,7 @@ public class EnemyBase : Pawn
         return true;
     }
 
+    #region KnockBack
     protected override void StartKnockBack()
     {
         base.StartKnockBack();
@@ -94,6 +105,7 @@ public class EnemyBase : Pawn
             Destroy(gameObject);
         }
     }
+    #endregion
 
     protected override void OnDeath()
     {
@@ -109,12 +121,14 @@ public class EnemyBase : Pawn
 
     protected override IEnumerator _Attack(Vector3 dir)
     {
+        PrepareAttack(dir);
         yield return new WaitForSeconds(attackAnticipationTime);
-        if (!IsPlayerInRange(dir))
+        if (IsPlayerInRange(dir))
         {
             //check range again
             Game.Player.OnHit(dir * stats.knockbackForce, stats.damage);
         }
+        EndAttack();
     }
 
 #if UNITY_EDITOR

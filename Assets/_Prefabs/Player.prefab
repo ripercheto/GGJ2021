@@ -429,10 +429,12 @@ MonoBehaviour:
     damage: 1
     attackRate: 0.5
     movementSpeed: 10
+    turnFactor: 20
     knockbackForce: 3
     knockbackDuration: 0.5
     knockbackRecoveryTime: 0.5
   body: {fileID: 7040582324116481431}
+  animator: {fileID: 0}
   attackTriggerArea: {fileID: 1400550438597604485}
   attackTriggerDirOffset: 1
   attackMovementDistance: 20
@@ -463,7 +465,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!1 &7040582324894593851
 GameObject:
