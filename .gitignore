@@ -24,6 +24,7 @@
 [Aa]ssetsPluginsEditorJetBrains
 
 # Visual Studio cache directory
+.csproj
 .vs
 
 # Gradle cache directory
