@@ -5,6 +5,8 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class RenderCamera : MonoBehaviour
 {
+    public static RenderCamera instance;
+
     public Camera ownCamera;
     public Camera viewCam;
     public RenderTexture tex;
@@ -19,6 +21,7 @@ public class RenderCamera : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        instance = this;
         CreateRT();
     }
 
@@ -36,7 +39,6 @@ public class RenderCamera : MonoBehaviour
         {
             filterMode = FilterMode.Point
         };
-        viewCam.forceIntoRenderTexture = false;
         viewCam.targetTexture = tex;
         viewMat.SetTexture("_MainTex", tex);
 

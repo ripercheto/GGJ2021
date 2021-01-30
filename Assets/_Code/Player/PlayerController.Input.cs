@@ -4,7 +4,6 @@ using UnityEngine;
 
 partial class PlayerController
 {
-    public Camera viewCam;
     private Plane plane;
 
     private void InitInput()
@@ -30,21 +29,17 @@ partial class PlayerController
 
     private void HandleMouseInput()
     {
-        var mousePos = Input.mousePosition;
-        var ray = viewCam.ScreenPointToRay(mousePos);
-
-        Debug.DrawLine(ray.origin, ray.origin + ray.direction * 10, Color.red);
         if (!Input.GetMouseButtonDown(0))
         {
             return;
         }
-
+        var mousePos = Input.mousePosition / RenderCamera.instance.scaleFactor;
+        var ray = Game.Cam.cam.ScreenPointToRay(mousePos);
 
         if (!plane.Raycast(ray, out var enter))
         {
             return;
         }
-
         var hitPos = ray.GetPoint(enter);
 
         var dir = hitPos - transform.position;

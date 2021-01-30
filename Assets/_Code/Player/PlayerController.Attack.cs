@@ -4,21 +4,19 @@ using UnityEngine;
 
 partial class PlayerController
 {
+    public TriggerArea attackTriggerArea;
+
+    public float attackDamage = 1;
     public float attackCooldown = 1;
     public float attackMovement = 2;
-    public float attackTime = 0.5f;
+    public float attackDuration = 0.1f;
 
     private float attackTimer;
+    private Coroutine attackRoutine;
+    private List<EnemyBase> hitEnemies;
 
     private bool CanAttack => attackTimer <= 0;
     private bool IsAttacking => attackRoutine != null;
-
-    private Coroutine attackRoutine;
-
-    void InitAttack()
-    {
-
-    }
 
     void HandleAttackCooldown()
     {
@@ -34,24 +32,55 @@ partial class PlayerController
         {
             return;
         }
-        attackTimer = attackCooldown;
         attackRoutine = StartCoroutine(_Attack(dir));
+    }
+
+    void PrepareAttack(Vector3 dir)
+    {
+        attackTriggerArea.gameObject.SetActive(true);
+        var rot = Quaternion.LookRotation(dir);
+        attackTriggerArea.transform.rotation = rot;
+        attackTriggerArea.transform.localPosition = dir;
+
+        body.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
 
     private IEnumerator _Attack(Vector3 dir)
     {
+        PrepareAttack(dir);
+
         var startPos = transform.position;
         var targetPos = startPos + dir * attackMovement;
         var t = 0f;
-        while (t < attackTime)
+        hitEnemies = new List<EnemyBase>();
+        while (t < attackDuration)
         {
             t += Time.deltaTime;
-            var a = t / attackTime;
+            var a = t / attackDuration;
             var newPos = Vector3.Lerp(startPos, targetPos, a);
             body.MovePosition(newPos);
+
+            var enemiesInTrigger = attackTriggerArea.InTrigger;
+            foreach (var item in enemiesInTrigger)
+            {
+                if (hitEnemies.Contains(item))
+                {
+                    continue;
+                }
+
+                item.OnHit(transform.position, attackDamage);
+                hitEnemies.Add(item);
+            }
+
             yield return null;
         }
+        EnadAttack();
+    }
 
+    void EnadAttack()
+    {
         attackRoutine = null;
+        attackTimer = attackCooldown;
+        attackTriggerArea.gameObject.SetActive(false);
     }
 }
