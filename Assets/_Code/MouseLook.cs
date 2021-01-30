@@ -37,8 +37,23 @@ public class MouseLook : MonoBehaviour
 
 	Quaternion originalRotation;
 
-	void Update()
+    private void Awake()
+    {
+		Cursor.lockState = CursorLockMode.Locked;
+	}
+
+    private void OnApplicationFocus(bool focus)
+    {
+		Cursor.lockState = CursorLockMode.Locked;
+	}
+
+    void Update()
 	{
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+			Cursor.lockState = CursorLockMode.None;
+        }
+
 		if (axes == RotationAxes.MouseXAndY)
 		{
 			// Read the mouse input axis

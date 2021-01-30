@@ -69,8 +69,10 @@
     <Compile Include="Assets\_Code\Game.cs" />
     <Compile Include="Assets\_Code\GameSettings.cs" />
     <Compile Include="Assets\_Code\MouseLook.cs" />
-    <Compile Include="Assets\_Code\MovingSphere.cs" />
-    <Compile Include="Assets\_Code\Phy.cs" />
+    <Compile Include="Assets\_Code\Player\PlayerController.Attack.cs" />
+    <Compile Include="Assets\_Code\Player\PlayerController.Input.cs" />
+    <Compile Include="Assets\_Code\Player\PlayerController.Movement.cs" />
+    <Compile Include="Assets\_Code\Player\PlayerController.cs" />
     <Compile Include="Assets\_Code\TraumaShake.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.18f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

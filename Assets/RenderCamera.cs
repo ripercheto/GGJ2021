@@ -36,7 +36,7 @@ public class RenderCamera : MonoBehaviour
         {
             filterMode = FilterMode.Point
         };
-        viewCam.forceIntoRenderTexture = true;
+        viewCam.forceIntoRenderTexture = false;
         viewCam.targetTexture = tex;
         viewMat.SetTexture("_MainTex", tex);
 
@@ -57,6 +57,11 @@ public class RenderCamera : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
+        if (tex == null || viewMat.GetTexture("_MainTex") == null)
+        {
+            CreateRT();
+        }
+
         if (scaleFactor != lastScaleFactor)
         {
             CreateRT();
