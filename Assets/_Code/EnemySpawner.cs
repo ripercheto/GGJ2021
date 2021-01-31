@@ -54,6 +54,8 @@ public class EnemySpawner : MonoBehaviour
 
             var enemy = Instantiate(Game.Settings.enemyPrefab, randomPoint, Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up));
         }
+
+        Destroy(agent);
     }
 
 #if UNITY_EDITOR

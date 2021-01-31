@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class EnemyBase : Pawn
 {
+    [SerializeField]
+    private Stats stats;
+
     [Header("References")]
     public NavMeshAgent agent;
     [Header("Ranges")]
@@ -22,6 +25,8 @@ public class EnemyBase : Pawn
 
     protected override Quaternion RecoverRotation => Quaternion.LookRotation(lastHitDir.normalized);
 
+    protected override Stats Stats => stats;
+
     private bool inDetectRange, inAttackRange, isOutOfLeaveRange;
 
     private bool hasDetectedPlayer;
@@ -29,7 +34,7 @@ public class EnemyBase : Pawn
     protected override void Awake()
     {
         base.Awake();
-        agent.speed = stats.movementSpeed;
+        agent.speed = Stats.MovementSpeed;
         agent.stoppingDistance = attackRange;
 
         Vector3 randPos = Random.insideUnitCircle;
@@ -88,7 +93,7 @@ public class EnemyBase : Pawn
 
     private void LookTowardsTarget()
     {
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, stats.turnFactor * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Stats.turnFactor * Time.deltaTime);
     }
 
     private bool IsPlayerInRange(Vector3 dir)
@@ -178,7 +183,7 @@ public class EnemyBase : Pawn
         if (IsPlayerInRange(dir))
         {
             //check range again
-            Game.Player.OnHit(dir * stats.knockbackForce, stats.damage);
+            Game.Player.OnHit(dir * Stats.knockbackForce, Stats.Damage);
         }
         EndAttack();
     }

@@ -17,20 +17,30 @@ public partial class Game : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
-        Shader.SetGlobalFloat("Vector1_71B9E5F1", dungeonTextureScale);
-    }
-    private void Update()
-    {
-#if UNITY_EDITOR
-        Shader.SetGlobalFloat("Vector1_71B9E5F1", dungeonTextureScale);
-#endif
     }
 
 }
 #if UNITY_EDITOR
 public static class Reload
 {
+    [UnityEditor.MenuItem("GameObject/MyCategory/Snap", false, 10)]
+    public static void ContextSnapToFloor()
+    {
+        var activeObj = UnityEditor.Selection.activeGameObject;
+        if (activeObj == null)
+        {
+            return;
+        }
+
+        var objPos = activeObj.transform.position;
+        if (!Physics.Raycast(objPos + Vector3.up, Vector3.down, out var hitInfo, Mathf.Infinity))
+        {
+            return;
+        }
+
+        activeObj.transform.position = hitInfo.point;
+    }
+
     [UnityEditor.Callbacks.DidReloadScripts]
     private static void OnScriptsReloaded()
     {

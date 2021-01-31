@@ -40,32 +40,37 @@ public class CameraController : MonoBehaviour
         var dir = -transform.forward;
 
         offset = dir * distanceFromPlayer;
+    }
 
+    private void Start()
+    {
         Game.Player.onPlayerHit.AddListener(OnPlayerHit);
         Game.Player.onEnemyHit.AddListener(OnHitEnemy);
     }
-
-    Vector3 leanTarget;
+    Vector3 panTarget;
 
     private void LateUpdate()
     {
         var p = Game.Player;
         var pMovement = p.input;
 
+        var pos = cam.transform.position;
         if (pMovement.sqrMagnitude > 0)
         {
             var x = Mathf.Clamp(pMovement.x, -Settings.maxMovement.x, Settings.maxMovement.x);
             var y = Mathf.Clamp(pMovement.y, -Settings.maxMovement.y, Settings.maxMovement.y);
-            leanTarget = new Vector3(x, 0, y);
+            panTarget = new Vector3(x, 0, y);
         }
         else
         {
-            leanTarget = Vector3.zero;
+            panTarget = Vector3.zero;
         }
 
         transform.position = Vector3.Lerp(transform.position, target.position + offset, 10 * Time.deltaTime);
 
-        cam.transform.localPosition = Vector3.Lerp(cam.transform.localPosition, leanTarget, 10 * Time.deltaTime);
+        var worldPos = transform.position + panTarget;
+
+        cam.transform.localPosition = Vector3.Lerp(cam.transform.localPosition, cam.transform.InverseTransformPoint(worldPos), 10 * Time.deltaTime);
     }
 
     void OnPlayerHit()
