@@ -10,7 +10,7 @@ public class EnemyBase : Pawn
     [Header("Ranges")]
     public float detectRange = 12;
     public float attackRange = 3;
-    public float stoppingDistance = 2;
+    public float stoppingRange = 2;
     public float inStoppingDistanceAcceleration = 50;
     [Header("Attack")]
     public float attackRadius = 45f;
@@ -21,6 +21,8 @@ public class EnemyBase : Pawn
     private Vector3 lastHitDir;
 
     protected override Quaternion RecoverRotation => Quaternion.LookRotation(lastHitDir.normalized);
+
+    private bool inDetectRange, inAttackRange, inStopRange;
 
     protected override void Awake()
     {
@@ -50,9 +52,13 @@ public class EnemyBase : Pawn
         dirToPlayer.y = 0;
         var distToPlayer = dirToPlayer.magnitude;
 
-        agent.acceleration = distToPlayer < stoppingDistance ? inStoppingDistanceAcceleration : accelerationDefault;
+        inDetectRange = distToPlayer <= detectRange;
+        inAttackRange = distToPlayer <= attackRange;
+        inStopRange = distToPlayer <= stoppingRange;
 
-        if (distToPlayer > detectRange)
+        agent.acceleration = inStopRange ? inStoppingDistanceAcceleration : accelerationDefault;
+
+        if (!inDetectRange)
         {
             return;
         }
@@ -67,7 +73,7 @@ public class EnemyBase : Pawn
             return;
         }
 
-        if (distToPlayer > attackRange)
+        if (!inAttackRange)
         {
             return;
         }
@@ -164,6 +170,17 @@ public class EnemyBase : Pawn
         //UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, attackRange);
 
         UnityEditor.Handles.DrawWireArc(transform.position, transform.up, Quaternion.Euler(0, -attackRadius * 0.5f, 0) * transform.forward, attackRadius, attackRange);
+    }
+
+    private void OnGUI()
+    {
+        var str = "CanAttack: " + CanAttack +
+        "\nIsAttacking: " + isAttacking +
+        "\nIsKnockedBack: " + IsKnockedBack +
+        "\ninDetectRange: " + inDetectRange +
+        "\ninAttackRange: " + inAttackRange +
+        "\ninStopRange: " + inStopRange;
+        UnityEditor.EditorGUILayout.TextArea(str, UnityEditor.EditorStyles.helpBox);
     }
 #endif
 }

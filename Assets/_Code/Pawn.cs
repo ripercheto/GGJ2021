@@ -82,6 +82,7 @@ public abstract class Pawn : MonoBehaviour
 
         if (HasHealth)
         {
+            yield return new WaitForSeconds(stats.knockbackRecoveryDelay);
             yield return _Recover(force);
         }
 
