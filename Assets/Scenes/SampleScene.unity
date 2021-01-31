@@ -356,7 +356,7 @@ RenderTexture:
     m_WrapW: 1
   m_Dimension: 2
   m_VolumeDepth: 1
---- !u!84 &1308416274
+--- !u!84 &1278915310
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2534,7 +2534,7 @@ PrefabInstance:
     - target: {fileID: 7040582324116481425, guid: 4b45be2a31efdfd4da9ced67d577eb78,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 7.87
       objectReference: {fileID: 0}
     - target: {fileID: 7040582324116481425, guid: 4b45be2a31efdfd4da9ced67d577eb78,
         type: 3}

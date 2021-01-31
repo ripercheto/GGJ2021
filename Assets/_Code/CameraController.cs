@@ -14,7 +14,9 @@ public class CameraSettings
     [Range(0, 1)]
     public float enemyHitStress = 0.2f;
 
-    public Vector2 maxMovement = new Vector2(3, 3);
+    public float sideMovement = 5f;
+    public float mainMoveLerpFactor = 10f;
+    public float localMoveLerpFactor = 10f;
 }
 
 partial class Game
@@ -30,7 +32,6 @@ public class CameraController : MonoBehaviour
 
     public TraumaShake shake;
     public Camera cam;
-    public Rigidbody target;
     public float distanceFromPlayer = 10;
 
     private Vector3 offset;
@@ -48,29 +49,26 @@ public class CameraController : MonoBehaviour
         Game.Player.onEnemyHit.AddListener(OnHitEnemy);
     }
     Vector3 panTarget;
+    private Vector3 camWorldPos;
 
     private void LateUpdate()
     {
         var p = Game.Player;
-        var pMovement = p.input;
+        //regular movement
+        transform.position = Vector3.Lerp(transform.position, p.transform.position + offset, Settings.mainMoveLerpFactor * Time.deltaTime);
 
-        var pos = cam.transform.position;
-        if (pMovement.sqrMagnitude > 0)
+        var pMovement = p.input * Settings.sideMovement;
+        if (pMovement.magnitude > 0f)
         {
-            var x = Mathf.Clamp(pMovement.x, -Settings.maxMovement.x, Settings.maxMovement.x);
-            var y = Mathf.Clamp(pMovement.y, -Settings.maxMovement.y, Settings.maxMovement.y);
-            panTarget = new Vector3(x, 0, y);
+            panTarget = new Vector3(pMovement.x, 0, pMovement.y);
         }
         else
         {
             panTarget = Vector3.zero;
         }
 
-        transform.position = Vector3.Lerp(transform.position, target.position + offset, 10 * Time.deltaTime);
-
-        var worldPos = transform.position + panTarget;
-
-        cam.transform.localPosition = Vector3.Lerp(cam.transform.localPosition, cam.transform.InverseTransformPoint(worldPos), 10 * Time.deltaTime);
+        camWorldPos = transform.position + panTarget;
+        cam.transform.position = Vector3.Lerp(cam.transform.position, camWorldPos, Settings.localMoveLerpFactor * Time.deltaTime);
     }
 
     void OnPlayerHit()
@@ -81,5 +79,14 @@ public class CameraController : MonoBehaviour
     void OnHitEnemy()
     {
         shake.InduceStress(Settings.enemyHitStress);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(cam.transform.position, .5f);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(camWorldPos, .5f);
+        Gizmos.DrawLine(cam.transform.position, camWorldPos);
     }
 }

@@ -9,7 +9,7 @@ partial class PlayerController
     public float attackTriggerDirOffset = 1;
 
     public float attackMovementForce = 20;
-    public float attackDurationFailSafeTime = 0.1f;
+    public float attackDurationFailSafeTime = 0.5f;
     public float attackTravelDistance = 0.1f;
 
     private List<EnemyBase> hitEnemies = new List<EnemyBase>();

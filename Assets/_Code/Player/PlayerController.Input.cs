@@ -5,6 +5,7 @@ using UnityEngine;
 partial class PlayerController
 {
     private Plane plane;
+    [HideInInspector]
     public Vector2 input;
 
     private void InitInput()

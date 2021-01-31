@@ -14,7 +14,16 @@ public partial class PlayerController : Pawn
 
     [SerializeField]
     private UpgradeableStats stats;
-    public int level = 1;
+    public int Level
+    {
+        get => level;
+        set
+        {
+            level = value;
+            stats.SetLevel(level);
+        }
+    }
+    private int level = 1;
 
     [Header("Damage")]
     public float immuneDuration = 1f;
@@ -33,7 +42,7 @@ public partial class PlayerController : Pawn
     {
         instance = this;
 
-        stats.SetLevel(level);
+        HandleExperience();
 
         base.Awake();
 

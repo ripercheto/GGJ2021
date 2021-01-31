@@ -153,7 +153,7 @@ partial class PlayerController
         }
         else
         {
-            targetRot = Quaternion.LookRotation(lastLookDir);
+            targetRot = Quaternion.LookRotation(transform.position + lastLookDir);
         }
     }
 

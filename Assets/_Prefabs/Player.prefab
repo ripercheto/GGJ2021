@@ -431,8 +431,9 @@ MonoBehaviour:
   attackTriggerArea: {fileID: 1400550438597604485}
   attackTriggerDirOffset: 1
   attackMovementForce: 20
-  attackDurationFailSafeTime: 1
+  attackDurationFailSafeTime: 0.5
   attackTravelDistance: 3
+  levelingConstant: 0.3
   input: {x: 0, y: 0}
   maxAcceleration: 100
   maxAirAcceleration: 100
@@ -453,7 +454,6 @@ MonoBehaviour:
     damagePerLevel: 1
     attackRatePerLevel: 1
     movementSpeedPerLevel: 1
-  level: 1
   immuneDuration: 1
   coll: {fileID: 7040582324894593849}
   onPlayerHit:
