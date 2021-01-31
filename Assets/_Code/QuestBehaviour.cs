@@ -7,30 +7,28 @@ using UnityEngine.UI;
 public class QuestBehaviour : MonoBehaviour
 {
     //Requested item
-    public Item LostItem;
-    public Image LostItem_UI;
+    bool FirstEncounter = true;
+    Item LostItem;
 
-
-    //Satisfaction
-    public Image[] SatisfactionSlot_UI;
-    public Sprite Satisfaction_Unknown;
-    public Sprite Satisfaction_Unhappy;
-    public Sprite Satisfaction_Happy;
-    int CurrentSatisfactionSlot = 0;
-    
-    public Item[] AvailableItems;
-
+    [Header("Basic settings")]
+    public Image LostItem_UI; //Target to draw lost items on
     public CustomerBehaviour CustomerPrefab;
     List<CustomerBehaviour> ListOfCustomers = new List<CustomerBehaviour>();
 
+    [Header("Satisfaction settings")]
+    public Image[] Slots_UI; //Target to draw satisfaction rates
+    public Sprite Unknown_Icon;
+    public Sprite Unhappy_Icon;
+    public Sprite Happy_Icon;
+    int CurrentSatisfactionSlot = 0;
+
     void Start() {
-        LostItem_UI.sprite = LostItem.icon;
+        //LostItem_UI.sprite = LostItem.icon;
         ResetSatisfactionUI();
     }
-
     void ResetSatisfactionUI() {
-        foreach (Image IconSlot in SatisfactionSlot_UI) {
-            IconSlot.sprite = Satisfaction_Unknown;
+        foreach (Image IconSlot in Slots_UI) {
+            IconSlot.sprite = Unknown_Icon;
         }
         
     }
@@ -47,8 +45,8 @@ public class QuestBehaviour : MonoBehaviour
         bool LostItemIsFound = LostItem == a_FoundItem;
 
         //Set the satisfaction image depending on found or lost...  
-        Sprite CurrentSatisfaction = LostItemIsFound ? Satisfaction_Happy : Satisfaction_Unhappy;
-        SatisfactionSlot_UI[CurrentSatisfactionSlot].sprite = CurrentSatisfaction; //Set satisfaction sprite on HUD
+        Sprite CurrentSatisfaction = LostItemIsFound ? Happy_Icon : Unhappy_Icon;
+        Slots_UI[CurrentSatisfactionSlot].sprite = CurrentSatisfaction; //Set satisfaction sprite on HUD
 
         //Remove NPC from customers
         if (ListOfCustomers.Count > 0) { //Running function without customer
@@ -66,17 +64,49 @@ public class QuestBehaviour : MonoBehaviour
         ListOfCustomers.Add(NewCustomer); //Keep track of customers
     }
 
-    //Temporary reset function
-    void InSlotBounds() {
-        if (CurrentSatisfactionSlot > 4) {
-            CurrentSatisfactionSlot = 0;
-            ResetSatisfactionUI();
+    Item GetRandomItem() {
+        Item[] t_AvailibleItems = Game.Settings.AvailableItems;
+        int t_RandomItemIndex = Random.Range(0, t_AvailibleItems.Length);
+
+        return t_AvailibleItems[t_RandomItemIndex];
+    }
+
+    bool GameOver(int a_SlotNumber) {
+        if (a_SlotNumber > Slots_UI.Length) {
+            return true;
+        }
+        return false;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
+
+        if (FirstEncounter) {
+            InitNextCustomer();
+            FirstEncounter = false;
+            return;
+        }
+        
+        //Deliver the found object
+        CompareFoundItem(GetRandomItem());
+
+        //Select next satisfaction slot...
+        CurrentSatisfactionSlot++;
+        if (GameOver(CurrentSatisfactionSlot) == true) {
+            print("GAME OVER!!!");
+        }
+        else {
+            InitNextCustomer();
         }
     }
 
-    Item GetRandomItem() {
-        return AvailableItems[Random.Range(0, AvailableItems.Length)];
-    }
+    //Temporary reset function
+    //void InSlotBounds() {
+    //    if (CurrentSatisfactionSlot > 4) {
+    //        CurrentSatisfactionSlot = 0;
+    //        ResetSatisfactionUI();
+    //    }
+    //}
 
     //Temporary customer spawner
     //int someTime = 100;
@@ -92,21 +122,22 @@ public class QuestBehaviour : MonoBehaviour
     //    }
     //}
 
-    void Update(){
-        //Temporary
-        if (Input.GetKeyUp("o")) {
-            InitNextCustomer();
-        }
-
-        if (Input.GetKeyUp("i")) {
-            CompareFoundItem(GetRandomItem()); 
-
-            //Select next satisfaction slot...
-            CurrentSatisfactionSlot++;
-            InSlotBounds(); //restarts from satisfaction slot 0
-
-            InitNextCustomer();
-        }
-    }
+    //void Update(){
+    //    //Temporary
+    //    if (Input.GetKeyUp("o")) {
+    //        InitNextCustomer();//OnStart hand in round
+    //    }
+    //
+    //    if (Input.GetKeyUp("i")) {
+    //        //Every other round 
+    //        CompareFoundItem(GetRandomItem()); 
+    //
+    //        //Select next satisfaction slot...
+    //        CurrentSatisfactionSlot++;
+    //        InSlotBounds(); //restarts from satisfaction slot 0
+    //
+    //        InitNextCustomer();
+    //    }
+    //}
 
 }

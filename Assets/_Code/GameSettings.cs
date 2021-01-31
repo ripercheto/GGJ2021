@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = nameof(GameSettings), fileName = nameof(GameSettings))]
 public partial class GameSettings : ScriptableObject
 {
-
+    public Item[] AvailableItems;
 }
