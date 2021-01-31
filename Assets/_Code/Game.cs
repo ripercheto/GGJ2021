@@ -20,34 +20,15 @@ public partial class Game : MonoBehaviour
         Instance = this;
     }
 
-
     private void Start()
     {
-        StartDungeon();
-    }
-    #region dungeon
-
-    public static void StartDungeon()
-    {
-        //spawn
-        //generate random item placements
-        //move player and start battle
-
-        Dungeon.ActivateSpawners();
-
-
-        //spawn items
-
+        if (!Application.isPlaying)
+        {
+            return;
+        }
 
         Player.ResetPlayer(Dungeon.playerSpawnPos.position);
     }
-
-    public void CleanUpDungeon()
-    {
-        Dungeon.CleanUp();
-    }
-    #endregion
-
 }
 #if UNITY_EDITOR
 public static class Reload
