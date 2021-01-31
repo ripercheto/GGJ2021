@@ -25,6 +25,15 @@ public class Dungeon : MonoBehaviour
         var pos = possibleItemPositions[random].position;
         lostItemInstance = Instantiate(lostItemPrefab, pos, Quaternion.identity, transform);
 
+        var itemCount = Game.Settings.AvailableItems.Length;
+
+        if (itemCount == 0)
+        {
+            return;
+        }
+        random = Random.Range(0, itemCount);
+
+        lostItemInstance.item = Game.Settings.AvailableItems[random];
     }
 
     public void CleanUp()
@@ -32,6 +41,11 @@ public class Dungeon : MonoBehaviour
         foreach (var spawner in spawners)
         {
             spawner.CleanUp();
+        }
+
+        if (lostItemInstance != null)
+        {
+            Destroy(lostItemInstance.gameObject);
         }
     }
 }

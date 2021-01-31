@@ -1110,7 +1110,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5388565554711048914}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1560,6 +1560,7 @@ MonoBehaviour:
   maxGroundAngle: 25
   modelPivot: {fileID: 4826074061510822991}
   tiltAmount: 0.1
+  carryingItem: {fileID: 0}
   healthbar: {fileID: 5012345941164222048}
   cooldownbar: {fileID: 4576461957855615655}
   stats:

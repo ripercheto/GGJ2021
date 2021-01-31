@@ -52,7 +52,7 @@ public class EnemySpawner : MonoBehaviour
             randomPoint *= range;
             randomPoint += transform.position;
 
-            if (agent == null || !agent.enabled == false)
+            if (agent == null || !agent.enabled)
             {
                 break;
             }

@@ -23,22 +23,19 @@ public partial class Game : MonoBehaviour
 
     private void Start()
     {
+        if (!Application.isPlaying)
+        {
+            return;
+        }
+
         StartDungeon();
     }
     #region dungeon
 
     public static void StartDungeon()
     {
-        //spawn
-        //generate random item placements
-        //move player and start battle
-
         Dungeon.ActivateSpawners();
-
-
-        //spawn items
-
-
+        Dungeon.SpawnItemAtRandomLocation();
         Player.ResetPlayer(Dungeon.playerSpawnPos.position);
     }
 

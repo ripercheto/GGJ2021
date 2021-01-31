@@ -6,6 +6,13 @@ public class LostItem : MonoBehaviour
 {
     public Item item;
 
+    private void Awake()
+    {
+        var randPos = Random.insideUnitSphere;
+        randPos.y = 0;
+        transform.rotation = Quaternion.LookRotation(randPos);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer != 10)
@@ -13,7 +20,7 @@ public class LostItem : MonoBehaviour
             return;
         }
 
-        var p = other.gameObject.GetComponent<PlayerController>();
+        var p = other.gameObject.GetComponentInParent<PlayerController>();
         if (p == null)
         {
             return;
@@ -25,5 +32,7 @@ public class LostItem : MonoBehaviour
         }
 
         p.carryingItem = item;
+
+        Destroy(gameObject);
     }
 }

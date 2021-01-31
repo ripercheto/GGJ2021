@@ -25,7 +25,7 @@ public class EnemyBase : Pawn
     private Vector3 homePosition;
 
     protected override Quaternion RecoverRotation => Quaternion.LookRotation(lastHitDir.normalized);
-    protected override Color DefaultColor => new Color(0,0,0,0.4f);
+    protected override Color DefaultColor => new Color(0.01f, 0.6f, 0, 0.4f);
     protected override Stats Stats => stats;
 
     private bool inDetectRange, inAttackRange, isOutOfLeaveDist;
@@ -40,6 +40,7 @@ public class EnemyBase : Pawn
 
         Vector3 randPos = Random.insideUnitCircle;
         randPos.y = 0;
+
         randPos *= 3;
         homePosition = transform.position + randPos;
 

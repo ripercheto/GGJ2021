@@ -336,6 +336,7 @@ MonoBehaviour:
   animator: {fileID: 4629261263096107019}
   renderers:
   - {fileID: 1268635933020139668}
+  - {fileID: 6322849428410406602}
   isDead: 0
   stats:
     turnFactor: 20
@@ -348,7 +349,7 @@ MonoBehaviour:
     knockbackRecoveryDelay: 1
     knockbackRecoveryTime: 0.5
   agent: {fileID: 4225334813395936099}
-  deathMaterial: {fileID: 0}
+  deathMaterial: {fileID: 2100000, guid: 9d878a0fdf99cfd4d9fb2108cc353d97, type: 2}
   detectRange: 12
   attackRange: 2
   stoppingRange: 2

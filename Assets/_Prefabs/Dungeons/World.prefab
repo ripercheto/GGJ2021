@@ -8877,6 +8877,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d3bdeaf400d5894c9a29f7db6f3d9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lostItemPrefab: {fileID: 8687415750610527550, guid: 1fc8ac552989a9d4cab4a46cca8e6af1,
+    type: 3}
   playerSpawnPos: {fileID: 3537160774005701191}
   spawners:
   - {fileID: 8019758462881414047}
