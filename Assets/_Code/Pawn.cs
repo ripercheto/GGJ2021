@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Pawn : MonoBehaviour
 {
-    public Stats stats;
+    protected abstract Stats Stats { get; }
     [Header("References")]
     public Rigidbody body;
     public Animator animator;
@@ -27,7 +27,7 @@ public abstract class Pawn : MonoBehaviour
 
     protected virtual void Awake()
     {
-        currentHealth = stats.health;
+        currentHealth = Stats.Health;
         defaultConstraints = body.constraints;
     }
 
@@ -76,10 +76,10 @@ public abstract class Pawn : MonoBehaviour
         StartKnockBack();
 
         var t = 0f;
-        while (t < stats.knockbackDuration)
+        while (t < Stats.knockbackDuration)
         {
             t += Time.deltaTime;
-            var a = t / stats.knockbackDuration;
+            var a = t / Stats.knockbackDuration;
             var exponent = Mathf.Pow(0.001f, a);// * Time.deltaTime;
             var f = exponent * force;
             body.AddForce(f, ForceMode.VelocityChange);
@@ -87,7 +87,7 @@ public abstract class Pawn : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(stats.knockbackRecoveryDelay);
+        yield return new WaitForSeconds(Stats.knockbackRecoveryDelay);
         if (HasHealth)
         {
             yield return _Recover(force);
@@ -100,13 +100,14 @@ public abstract class Pawn : MonoBehaviour
     {
         var startRot = transform.rotation;
         var t = 0f;
-        while (t < stats.knockbackRecoveryTime)
+        while (t < Stats.knockbackRecoveryTime)
         {
             t += Time.deltaTime;
-            var a = t / stats.knockbackRecoveryTime;
+            var a = t / Stats.knockbackRecoveryTime;
             transform.rotation = Quaternion.Lerp(startRot, RecoverRotation, a);
             yield return null;
         }
+        transform.rotation = RecoverRotation;
     }
     protected virtual void EndKnockBack()
     {
@@ -152,7 +153,7 @@ public abstract class Pawn : MonoBehaviour
     protected virtual void EndAttack()
     {
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
-        attackTimer = stats.attackRate;
+        attackTimer = Stats.AttackRate;
         attackRoutine = null;
         isAttacking = false;
     }

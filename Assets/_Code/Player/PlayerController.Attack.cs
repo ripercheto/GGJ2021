@@ -9,7 +9,7 @@ partial class PlayerController
     public float attackTriggerDirOffset = 1;
 
     public float attackMovementForce = 20;
-    public float attackDurationFailSafeTime = 0.1f;
+    public float attackDurationFailSafeTime = 0.5f;
     public float attackTravelDistance = 0.1f;
 
     private List<EnemyBase> hitEnemies = new List<EnemyBase>();
@@ -31,7 +31,7 @@ partial class PlayerController
         attackDir = dir * attackMovementForce;
 
         //prepare attack rotation
-        Rotation = attackRotation = lastLookRot = targetRot = Quaternion.LookRotation(dir);
+        Rotation = attackRotation = targetRot = Quaternion.LookRotation(dir);
 
         attackTriggerArea.gameObject.SetActive(true);
         attackTriggerArea.transform.localPosition = triggerAreaOffset + dir * attackTriggerDirOffset;
@@ -67,8 +67,8 @@ partial class PlayerController
                 }
 
                 var dirToEnemy = (item.transform.position - transform.position).normalized;
-                var force = (dirToEnemy + dir).normalized * stats.knockbackForce;
-                item.OnHit(force, stats.damage);
+                var force = (dirToEnemy + dir).normalized * Stats.knockbackForce;
+                item.OnHit(force, Stats.Damage);
                 onEnemyHit.Invoke();
                 hitEnemies.Add(item);
             }

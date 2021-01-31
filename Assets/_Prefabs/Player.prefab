@@ -424,30 +424,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b73193a622a70c8429b08296d10de982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats:
-    health: 10
-    damage: 1
-    attackRate: 0.5
-    movementSpeed: 10
-    turnFactor: 20
-    knockbackForce: 3
-    knockbackDuration: 0.5
-    knockbackRecoveryDelay: 0
-    knockbackRecoveryTime: 0.5
   body: {fileID: 7040582324116481431}
   animator: {fileID: 0}
   renderer: {fileID: 5343510798520800663}
+  isDead: 0
   attackTriggerArea: {fileID: 1400550438597604485}
   attackTriggerDirOffset: 1
   attackMovementForce: 20
-  attackDurationFailSafeTime: 1
+  attackDurationFailSafeTime: 0.5
   attackTravelDistance: 3
+  levelingConstant: 0.3
+  input: {x: 0, y: 0}
   maxAcceleration: 100
   maxAirAcceleration: 100
   maxGroundAngle: 25
   modelPivot: {fileID: 4581396597630355975}
   tiltAmount: 0.1
-  invulnerabilityTime: 1
+  stats:
+    turnFactor: 20
+    health: 10
+    damage: 1
+    attackRate: 0.5
+    movementSpeed: 10
+    knockbackForce: 3
+    knockbackDuration: 0.5
+    knockbackRecoveryDelay: 0
+    knockbackRecoveryTime: 0.5
+    healthPerLevel: 1
+    damagePerLevel: 1
+    attackRatePerLevel: 1
+    movementSpeedPerLevel: 1
+  immuneDuration: 1
   coll: {fileID: 7040582324894593849}
   onPlayerHit:
     m_PersistentCalls:
@@ -469,7 +476,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!1 &7040582324894593851
 GameObject:

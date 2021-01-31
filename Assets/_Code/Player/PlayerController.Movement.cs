@@ -125,7 +125,6 @@ partial class PlayerController
     [Range(0, 1)]
     public float tiltAmount;
     private Vector3 lastLookDir;
-    private Quaternion lastLookRot;
 
     private Quaternion Rotation
     {
@@ -145,21 +144,22 @@ partial class PlayerController
 
     void HandleModelTargetRot()
     {
-        var maxSpeedFraction = stats.movementSpeed * 0.1f;
-        var isVelAboveFraction = body.velocity.magnitude > maxSpeedFraction;
-        if (input.magnitude > 0f && isVelAboveFraction)
+        if (body.velocity.magnitude > 1)
         {
             lastLookDir = body.velocity;
             lastLookDir.y = 0;
             lastLookDir.Normalize();
-            lastLookRot = Quaternion.LookRotation(lastLookDir);
+            targetRot = Quaternion.LookRotation(lastLookDir + Vector3.down * tiltAmount);
         }
-        targetRot = isVelAboveFraction ? Quaternion.LookRotation(lastLookDir + Vector3.down * tiltAmount) : lastLookRot;
+        else
+        {
+            targetRot = Quaternion.LookRotation(transform.position + lastLookDir);
+        }
     }
 
     private void RotateModelTowardsTarget()
     {
-        Rotation = Quaternion.Lerp(Rotation, targetRot, stats.turnFactor * Time.deltaTime);
+        Rotation = Quaternion.Lerp(Rotation, targetRot, Stats.turnFactor * Time.deltaTime);
     }
     #endregion
 }

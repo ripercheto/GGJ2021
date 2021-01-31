@@ -12,8 +12,21 @@ public partial class PlayerController : Pawn
 {
     public static PlayerController instance;
 
+    [SerializeField]
+    private UpgradeableStats stats;
+    public int Level
+    {
+        get => level;
+        set
+        {
+            level = value;
+            stats.SetLevel(level);
+        }
+    }
+    private int level = 1;
+
     [Header("Damage")]
-    public float invulnerabilityTime = 1f;
+    public float immuneDuration = 1f;
     public Collider coll;
 
     public UnityEvent onPlayerHit = new UnityEvent();
@@ -21,14 +34,19 @@ public partial class PlayerController : Pawn
 
     private PhysicMaterial defaultMat;
 
+    private float immuneTime;
+    protected override Stats Stats => stats;
+    private bool IsImmune => Time.time < immuneTime;
+
     protected override void Awake()
     {
         instance = this;
 
-        body.centerOfMass = Vector3.up;
+        HandleExperience();
 
         base.Awake();
 
+        body.centerOfMass = Vector3.up;
         defaultMat = coll.sharedMaterial;
 
         InitInput();
@@ -50,6 +68,11 @@ public partial class PlayerController : Pawn
 
     public override void OnHit(Vector3 from, float damage)
     {
+        if (IsImmune)
+        {
+            return;
+        }
+
         if (!HasHealth)
         {
             //already dead
@@ -74,6 +97,15 @@ public partial class PlayerController : Pawn
     protected override void EndKnockBack()
     {
         coll.material = defaultMat;
+        immuneTime = Time.time + immuneDuration;
+        Blink(Color.blue, 1, immuneDuration);
+
+        transform.rotation = RecoverRotation;
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out var hit, 3f, LayerMask.GetMask("World")))
+        {
+            transform.position = hit.point;
+        }
+
         base.EndKnockBack();
     }
 
