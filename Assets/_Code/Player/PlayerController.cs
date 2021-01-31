@@ -25,6 +25,8 @@ public partial class PlayerController : Pawn
     {
         instance = this;
 
+        body.centerOfMass = Vector3.up;
+
         base.Awake();
 
         defaultMat = coll.sharedMaterial;

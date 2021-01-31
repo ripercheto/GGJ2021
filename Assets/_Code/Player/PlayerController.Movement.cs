@@ -147,7 +147,7 @@ partial class PlayerController
     {
         var maxSpeedFraction = stats.movementSpeed * 0.1f;
         var isVelAboveFraction = body.velocity.magnitude > maxSpeedFraction;
-        if (playerInput.magnitude > 0f && isVelAboveFraction)
+        if (input.magnitude > 0f && isVelAboveFraction)
         {
             lastLookDir = body.velocity;
             lastLookDir.y = 0;

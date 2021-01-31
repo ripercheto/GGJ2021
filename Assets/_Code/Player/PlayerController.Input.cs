@@ -5,7 +5,7 @@ using UnityEngine;
 partial class PlayerController
 {
     private Plane plane;
-    private Vector2 playerInput;
+    public Vector2 input;
 
     private void InitInput()
     {
@@ -20,11 +20,11 @@ partial class PlayerController
 
     private void HandleVelocity()
     {
-        playerInput.x = Input.GetAxis("Horizontal");
-        playerInput.y = Input.GetAxis("Vertical");
-        playerInput = Vector2.ClampMagnitude(playerInput, 1f);
+        input.x = Input.GetAxis("Horizontal");
+        input.y = Input.GetAxis("Vertical");
+        input = Vector2.ClampMagnitude(input, 1f);
 
-        desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * stats.movementSpeed;
+        desiredVelocity = new Vector3(input.x, 0f, input.y) * stats.movementSpeed;
     }
 
     private void HandleMouseInput()

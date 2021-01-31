@@ -203,9 +203,9 @@ public class EnemyBase : Pawn
 
         UnityEditor.Handles.color = Color.red;
         var rot = Quaternion.Euler(0, -attackRadius * 0.5f, 0);
-        UnityEditor.Handles.DrawWireArc(transform.position, transform.up, rot * transform.forward, attackRadius, attackRange);
+        UnityEditor.Handles.DrawWireArc(transform.position, Vector3.up, rot * transform.forward, attackRadius, attackRange);
         UnityEditor.Handles.DrawLine(transform.position, transform.position + rot * transform.forward * attackRange);
-        UnityEditor.Handles.DrawLine(transform.position, transform.position + Quaternion.Euler(0, attackRadius * 0.5f, 0) * transform.forward * attackRange);
+        UnityEditor.Handles.DrawLine(transform.position, transform.position + Quaternion.Inverse(rot) * transform.forward * attackRange);
     }
 
     /*private void OnGUI()

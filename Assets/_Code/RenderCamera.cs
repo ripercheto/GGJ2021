@@ -8,7 +8,6 @@ public class RenderCamera : MonoBehaviour
     public static RenderCamera instance;
 
     public Camera ownCamera;
-    public Camera viewCam;
     public RenderTexture tex;
     public Material viewMat;
 
@@ -65,7 +64,7 @@ public class RenderCamera : MonoBehaviour
         {
             filterMode = FilterMode.Point
         };
-        viewCam.targetTexture = tex;
+        Game.Cam.cam.targetTexture = tex;
         viewMat.SetTexture("_MainTex", tex);
 
         // distance on the local z axis of the camera (i.e. the look at direction)
