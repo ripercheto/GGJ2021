@@ -16,11 +16,12 @@ public class QuestBehaviour : MonoBehaviour
     public Sprite Satisfaction_Unknown;
     public Sprite Satisfaction_Unhappy;
     public Sprite Satisfaction_Happy;
-    int CurrentCustomer = 0;
+    int CurrentSatisfactionSlot = 0;
     
     public Item[] AvailableItems;
 
     public CustomerBehaviour CustomerPrefab;
+    List<CustomerBehaviour> ListOfCustomers = new List<CustomerBehaviour>();
 
     void Start() {
         LostItem_UI.sprite = LostItem.icon;
@@ -35,41 +36,48 @@ public class QuestBehaviour : MonoBehaviour
     }
 
     void SetLostItem(Item a_Item) {
+        //print("Setting lost item: " + a_Item.name);
+
         LostItem = a_Item;
-        LostItem_UI.sprite = LostItem.icon;
-        print("Setting lost item: " + LostItem.name);
+        LostItem_UI.sprite = a_Item.icon;
     }
-    void HandinFoundItem(Item a_FoundItem) {
-        print("Found item: "+ a_FoundItem.name);
+    void CompareFoundItem(Item a_FoundItem) {
+        //print("Found item: "+ a_FoundItem.name);
+        
+        bool LostItemIsFound = LostItem == a_FoundItem;
 
-        //Hand in the current customers requested item
-        Sprite CurrentSatisfaction = (LostItem == a_FoundItem) ? Satisfaction_Happy : Satisfaction_Unhappy;
-        SatisfactionSlot_UI[CurrentCustomer].sprite = CurrentSatisfaction;
+        //Set the satisfaction image depending on found or lost...  
+        Sprite CurrentSatisfaction = LostItemIsFound ? Satisfaction_Happy : Satisfaction_Unhappy;
+        SatisfactionSlot_UI[CurrentSatisfactionSlot].sprite = CurrentSatisfaction; //Set satisfaction sprite on HUD
 
-        //Initialize next customer and his/her requested item
-        InitNextCustomer();
+        //Remove NPC from customers
+        if (ListOfCustomers.Count > 0) { //Running function without customer
+            ListOfCustomers[0].SendHome(CurrentSatisfaction);
+            ListOfCustomers.Remove(ListOfCustomers[0]);
+        }
     }
 
     void InitNextCustomer() {
-        CurrentCustomer++;
-        SetLostItem(GetRandomItem());
+  
+        SetLostItem(GetRandomItem()); //Pick a random lost item
 
-        CustomerBehaviour NewCustomer = Instantiate<CustomerBehaviour>(CustomerPrefab); //Create new customer
+        CustomerBehaviour NewCustomer = Instantiate(CustomerPrefab); //Create new customer
         NewCustomer.Set_SpeechBubbleIcon(LostItem.icon); //Set the NPC speech bubble icon
+        ListOfCustomers.Add(NewCustomer); //Keep track of customers
     }
 
     //Temporary reset function
-    void CheckAndReset() {
-        if (CurrentCustomer > 4) {
-            CurrentCustomer = 0;
+    void InSlotBounds() {
+        if (CurrentSatisfactionSlot > 4) {
+            CurrentSatisfactionSlot = 0;
             ResetSatisfactionUI();
-            SetLostItem(GetRandomItem());
         }
     }
 
     Item GetRandomItem() {
         return AvailableItems[Random.Range(0, AvailableItems.Length)];
     }
+
     //Temporary customer spawner
     //int someTime = 100;
     //int someDynamicTime = 0;
@@ -87,8 +95,17 @@ public class QuestBehaviour : MonoBehaviour
     void Update(){
         //Temporary
         if (Input.GetKeyUp("o")) {
-            CheckAndReset();
-            HandinFoundItem(GetRandomItem());   
+            InitNextCustomer();
+        }
+
+        if (Input.GetKeyUp("i")) {
+            CompareFoundItem(GetRandomItem()); 
+
+            //Select next satisfaction slot...
+            CurrentSatisfactionSlot++;
+            InSlotBounds(); //restarts from satisfaction slot 0
+
+            InitNextCustomer();
         }
     }
 
