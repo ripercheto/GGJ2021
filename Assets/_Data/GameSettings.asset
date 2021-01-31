@@ -18,5 +18,7 @@ MonoBehaviour:
     sideMovement: 4
     mainMoveLerpFactor: 5
     localMoveLerpFactor: 2
+  dungeonPrefab: {fileID: 2974887262188238565, guid: 2e8e34a52f36c494f98481bf71339d49,
+    type: 3}
   enemyPrefab: {fileID: 1186747247886424506, guid: cb8228986a61d1b419896e5a6b68af42,
     type: 3}
