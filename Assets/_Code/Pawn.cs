@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class Pawn : MonoBehaviour
 {
-    [Header("Stats")]
     public Stats stats;
+    [Header("References")]
     public Rigidbody body;
     public Animator animator;
     public MeshRenderer renderer;
@@ -19,8 +19,9 @@ public abstract class Pawn : MonoBehaviour
     private Coroutine attackRoutine;
     private Coroutine knockbackRoutine;
     private RigidbodyConstraints defaultConstraints;
-    protected bool HasHealth => currentHealth > 0;
-    protected bool CanAttack => !isAttacking && attackTimer <= 0;
+    public bool HasHealth => currentHealth > 0;
+    public bool isDead;
+    protected bool CanAttack => !isAttacking && attackTimer <= 0 && !IsKnockedBack;
     protected bool IsKnockedBack { get; private set; }
     protected abstract Quaternion RecoverRotation { get; }
 
@@ -31,11 +32,15 @@ public abstract class Pawn : MonoBehaviour
     }
 
     #region Taking damage
+    protected virtual void OnDeath()
+    {
+        isDead = true;
+    }
     public virtual void OnHit(Vector3 force, float damage)
     {
         currentHealth -= damage;
 
-        if (!HasHealth)
+        if (!HasHealth && !isDead)
         {
             //dead
             OnDeath();
@@ -50,7 +55,6 @@ public abstract class Pawn : MonoBehaviour
         }
         knockbackRoutine = StartCoroutine(_Knockback(force));
     }
-    protected abstract void OnDeath();
     #endregion
 
     #region Knockback
@@ -117,20 +121,34 @@ public abstract class Pawn : MonoBehaviour
             return;
         }
 
-        if (attackRoutine != null)
-        {
-            StopCoroutine(attackRoutine);
-        }
+        CancelAttack();
         attackRoutine = StartCoroutine(_Attack(dir));
+    }
+
+    protected void CancelAttack(bool cleanup = false)
+    {
+        if (attackRoutine == null)
+        {
+            return;
+        }
+        StopCoroutine(attackRoutine);
+
+        if (!cleanup)
+        {
+            return;
+        }
+        EndAttack();
     }
 
     protected virtual void PrepareAttack(Vector3 dir)
     {
         isAttacking = true;
+        body.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
     protected abstract IEnumerator _Attack(Vector3 dir);
     protected virtual void EndAttack()
     {
+        body.AddForce(Vector3.zero, ForceMode.VelocityChange);
         attackTimer = stats.attackRate;
         attackRoutine = null;
         isAttacking = false;
@@ -146,6 +164,7 @@ public abstract class Pawn : MonoBehaviour
     #endregion
 
     private Coroutine blinkRoutine;
+    private Color lastDefaultColor;
 
     private void BlinkDamage()
     {
@@ -157,6 +176,7 @@ public abstract class Pawn : MonoBehaviour
         if (blinkRoutine != null)
         {
             StopCoroutine(blinkRoutine);
+            renderer.material.SetColor("_BaseColor", lastDefaultColor);
         }
 
         blinkRoutine = StartCoroutine(_Blink(c1, c2, times, duration));
@@ -164,7 +184,7 @@ public abstract class Pawn : MonoBehaviour
     private IEnumerator _Blink(Color c1, Color c2, int times, float colorTime)
     {
         var mat = renderer.material;
-        var defaultColor = mat.GetColor("_BaseColor");
+        lastDefaultColor = mat.GetColor("_BaseColor");
 
         for (int i = 0; i < times; i++)
         {
@@ -174,7 +194,7 @@ public abstract class Pawn : MonoBehaviour
             yield return new WaitForSeconds(colorTime);
         }
 
-        mat.SetColor("_BaseColor", defaultColor);
+        mat.SetColor("_BaseColor", lastDefaultColor);
         blinkRoutine = null;
     }
 }

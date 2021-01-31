@@ -11,33 +11,42 @@ public class EnemyBase : Pawn
     public float detectRange = 12;
     public float attackRange = 3;
     public float stoppingRange = 2;
+    public float leaveRange = 20;
     public float inStoppingDistanceAcceleration = 50;
     [Header("Attack")]
     public float attackRadius = 45f;
     public float attackAnticipationTime = 0.15f;
 
-    private float accelerationDefault;
-
     private Vector3 lastHitDir;
+    private Vector3 homePosition;
 
     protected override Quaternion RecoverRotation => Quaternion.LookRotation(lastHitDir.normalized);
 
-    private bool inDetectRange, inAttackRange, inStopRange;
+    private bool inDetectRange, inAttackRange, isOutOfLeaveRange;
+
+    private bool hasDetectedPlayer;
 
     protected override void Awake()
     {
         base.Awake();
         agent.speed = stats.movementSpeed;
-        //agent.stoppingDistance = stoppingDistance;
-        accelerationDefault = agent.acceleration;
+        agent.stoppingDistance = attackRange;
+
         Vector3 randPos = Random.insideUnitCircle;
         randPos.y = 0;
         randPos *= 3;
-        agent.SetDestination(transform.position + randPos);
+        homePosition = transform.position + randPos;
+
+        agent.SetDestination(homePosition);
     }
 
     private void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         HandleAttackCooldown();
 
         if (IsKnockedBack || isAttacking)
@@ -54,36 +63,23 @@ public class EnemyBase : Pawn
 
         inDetectRange = distToPlayer <= detectRange;
         inAttackRange = distToPlayer <= attackRange;
-        inStopRange = distToPlayer <= stoppingRange;
+        isOutOfLeaveRange = distToPlayer > leaveRange;
 
-        agent.acceleration = inStopRange ? inStoppingDistanceAcceleration : accelerationDefault;
+        if (isOutOfLeaveRange)
+        {
+            GoHome();//ur drunk
+            hasDetectedPlayer = false;
+        }
 
-        if (!inDetectRange)
+        if (!inDetectRange && !hasDetectedPlayer)
         {
             return;
         }
 
         //in sight
+        hasDetectedPlayer = true;
         targetRot = Quaternion.LookRotation(dirToPlayer);
         agent.SetDestination(playerPos);
-
-        if (!CanAttack)
-        {
-            //cant attack
-            return;
-        }
-
-        if (!inAttackRange)
-        {
-            return;
-        }
-
-        var angle = Vector3.Angle(dirToPlayer, transform.forward);
-        if (angle > attackRange)
-        {
-            //needs to rotate to player
-            return;
-        }
 
         //in attack range
         DoAttack(dirToPlayer);
@@ -121,6 +117,7 @@ public class EnemyBase : Pawn
     {
         agent.enabled = true;
         base.EndKnockBack();
+
         if (!HasHealth)
         {
             Destroy(gameObject);
@@ -138,8 +135,33 @@ public class EnemyBase : Pawn
 
     protected override void OnDeath()
     {
+        base.OnDeath();
         //enemy dead
+        EndAttack(); //cancel attack
         StartKnockBack();
+    }
+
+    protected override void DoAttack(Vector3 dir)
+    {
+        if (!CanAttack)
+        {
+            //cant attack
+            return;
+        }
+
+        if (!inAttackRange)
+        {
+            return;
+        }
+
+        var angle = Vector3.Angle(dir, transform.forward);
+        if (angle > attackRange)
+        {
+            //needs to rotate to player
+            return;
+        }
+
+        base.DoAttack(dir);
     }
 
     protected override void PrepareAttack(Vector3 dir)
@@ -161,26 +183,40 @@ public class EnemyBase : Pawn
         EndAttack();
     }
 
+    private void GoHome()
+    {
+        agent.SetDestination(homePosition);
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         UnityEditor.Handles.color = Color.green;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, detectRange);
-        UnityEditor.Handles.color = Color.red;
-        //UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, attackRange);
+        UnityEditor.Handles.color = Color.blue;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, leaveRange);
 
-        UnityEditor.Handles.DrawWireArc(transform.position, transform.up, Quaternion.Euler(0, -attackRadius * 0.5f, 0) * transform.forward, attackRadius, attackRange);
+        UnityEditor.Handles.color = Color.red;
+        var rot = Quaternion.Euler(0, -attackRadius * 0.5f, 0);
+        UnityEditor.Handles.DrawWireArc(transform.position, transform.up, rot * transform.forward, attackRadius, attackRange);
+        UnityEditor.Handles.DrawLine(transform.position, transform.position + rot * transform.forward * attackRange);
+        UnityEditor.Handles.DrawLine(transform.position, transform.position + Quaternion.Euler(0, attackRadius * 0.5f, 0) * transform.forward * attackRange);
     }
 
-    private void OnGUI()
+    /*private void OnGUI()
     {
         var str = "CanAttack: " + CanAttack +
         "\nIsAttacking: " + isAttacking +
         "\nIsKnockedBack: " + IsKnockedBack +
         "\ninDetectRange: " + inDetectRange +
         "\ninAttackRange: " + inAttackRange +
-        "\ninStopRange: " + inStopRange;
+        "\ninLeaveRange: " + isOutOfLeaveRange;
         UnityEditor.EditorGUILayout.TextArea(str, UnityEditor.EditorStyles.helpBox);
-    }
+    }*/
 #endif
 }

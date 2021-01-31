@@ -18,11 +18,8 @@ public partial class PlayerController : Pawn
 
     public UnityEvent onPlayerHit = new UnityEvent();
     public UnityEvent onEnemyHit = new UnityEvent();
-    private float vulnerableTime;
 
     private PhysicMaterial defaultMat;
-
-    private bool IsVulnerable => Time.time > vulnerableTime;
 
     protected override void Awake()
     {
@@ -51,20 +48,18 @@ public partial class PlayerController : Pawn
 
     public override void OnHit(Vector3 from, float damage)
     {
-        if (!IsVulnerable)
-        {
-            //cant take damage
-            return;
-        }
-
         if (!HasHealth)
         {
             //already dead
             return;
         }
 
+        if (IsKnockedBack)
+        {
+            return;
+        }
+
         base.OnHit(from, damage);
-        vulnerableTime = Time.time + invulnerabilityTime;
         onPlayerHit.Invoke();
     }
 

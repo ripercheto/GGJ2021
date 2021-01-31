@@ -258,7 +258,7 @@ MonoBehaviour:
     attackRate: 2
     movementSpeed: 8
     turnFactor: 20
-    knockbackForce: 3
+    knockbackForce: 1.5
     knockbackDuration: 0.5
     knockbackRecoveryDelay: 1
     knockbackRecoveryTime: 0.5
@@ -268,7 +268,8 @@ MonoBehaviour:
   agent: {fileID: 4225334813395936099}
   detectRange: 12
   attackRange: 2
-  stoppingDistance: 3
+  stoppingRange: 2
+  leaveRange: 15
   inStoppingDistanceAcceleration: 50
   attackRadius: 45
   attackAnticipationTime: 0.15

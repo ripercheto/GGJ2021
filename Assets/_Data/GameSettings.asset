@@ -15,3 +15,5 @@ MonoBehaviour:
   camera:
     playerHitStress: 0.8
     enemyHitStress: 0.4
+  enemyPrefab: {fileID: 1186747247886424506, guid: cb8228986a61d1b419896e5a6b68af42,
+    type: 3}
