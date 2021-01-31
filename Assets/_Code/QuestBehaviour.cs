@@ -14,6 +14,7 @@ public class QuestBehaviour : MonoBehaviour
     public Image LostItem_UI; //Target to draw lost items on
     public CustomerBehaviour CustomerPrefab;
     List<CustomerBehaviour> ListOfCustomers = new List<CustomerBehaviour>();
+    public Transform CustomerSpawnPoint;
 
     [Header("Satisfaction settings")]
     public Image[] Slots_UI; //Target to draw satisfaction rates
@@ -59,7 +60,7 @@ public class QuestBehaviour : MonoBehaviour
   
         SetLostItem(GetRandomItem()); //Pick a random lost item
 
-        CustomerBehaviour NewCustomer = Instantiate(CustomerPrefab); //Create new customer
+        CustomerBehaviour NewCustomer = Instantiate(CustomerPrefab, CustomerSpawnPoint); //Create new customer
         NewCustomer.Set_SpeechBubbleIcon(LostItem.icon); //Set the NPC speech bubble icon
         ListOfCustomers.Add(NewCustomer); //Keep track of customers
     }
@@ -79,6 +80,8 @@ public class QuestBehaviour : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
+
+        print("OnTriggerEnter");
         if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
 
         if (FirstEncounter) {
@@ -121,23 +124,26 @@ public class QuestBehaviour : MonoBehaviour
     //        someDynamicTime--;
     //    }
     //}
+    /*
+    void Update(){
+        //Temporary
+        if (Input.GetKeyUp("o")) {
+            InitNextCustomer();//OnStart hand in round
+            print("O pressed");
+        }
+    
+        if (Input.GetKeyUp("i")) {
+            //Every other round 
+            CompareFoundItem(GetRandomItem()); 
+    
+            //Select next satisfaction slot...
+            CurrentSatisfactionSlot++;
+            InSlotBounds(); //restarts from satisfaction slot 0
+    
+            InitNextCustomer();
 
-    //void Update(){
-    //    //Temporary
-    //    if (Input.GetKeyUp("o")) {
-    //        InitNextCustomer();//OnStart hand in round
-    //    }
-    //
-    //    if (Input.GetKeyUp("i")) {
-    //        //Every other round 
-    //        CompareFoundItem(GetRandomItem()); 
-    //
-    //        //Select next satisfaction slot...
-    //        CurrentSatisfactionSlot++;
-    //        InSlotBounds(); //restarts from satisfaction slot 0
-    //
-    //        InitNextCustomer();
-    //    }
-    //}
+            print("O pressed");
+        }
+    }*/
 
 }
