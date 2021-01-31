@@ -19,6 +19,27 @@ public partial class Game : MonoBehaviour
         Instance = this;
     }
 
+    #region dungeon
+    private static Dungeon dungeonReference;
+
+    public static void StartDungeon()
+    {
+        //spawn
+        //generate random item placements
+        //move player and start battle
+
+        dungeonReference = Instantiate(Settings.dungeonPrefab);
+    }
+
+    public void CleanUpDungeon()
+    {
+        if (dungeonReference != null)
+        {
+            Destroy(dungeonReference.gameObject);
+        }
+    }
+    #endregion
+
 }
 #if UNITY_EDITOR
 public static class Reload

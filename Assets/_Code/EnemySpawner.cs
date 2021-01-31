@@ -12,17 +12,14 @@ public class EnemySpawner : MonoBehaviour
 {
     public float range = 4;
     public int count = 5;
-
-    private NavMeshPath path;
-
+    public int maxRandomAdditions = 3;
     private void Start()
     {
         Spawn();
-        new NavMeshPath();
     }
     void Spawn()
     {
-
+        count += Random.Range(1, maxRandomAdditions + 1);
         var agent = gameObject.AddComponent<NavMeshAgent>();
         var path = agent.path;
 
@@ -38,6 +35,7 @@ public class EnemySpawner : MonoBehaviour
             var randomPoint = Random.insideUnitSphere;
             randomPoint.y = 0;
             randomPoint *= range;
+            randomPoint += transform.position;
 
             if (!agent.CalculatePath(randomPoint, path))
             {
@@ -52,7 +50,7 @@ public class EnemySpawner : MonoBehaviour
                 continue;
             }
 
-            var enemy = Instantiate(Game.Settings.enemyPrefab, randomPoint, Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up));
+            var enemy = Instantiate(Game.Settings.enemyPrefab, randomPoint, Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up), transform);
         }
 
         Destroy(agent);

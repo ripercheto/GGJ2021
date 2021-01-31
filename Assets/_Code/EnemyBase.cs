@@ -27,7 +27,7 @@ public class EnemyBase : Pawn
 
     protected override Stats Stats => stats;
 
-    private bool inDetectRange, inAttackRange, isOutOfLeaveRange;
+    private bool inDetectRange, inAttackRange, isOutOfLeaveDist;
 
     private bool hasDetectedPlayer;
 
@@ -59,6 +59,8 @@ public class EnemyBase : Pawn
             return;
         }
 
+        
+
         LookTowardsTarget();
 
         var playerPos = Game.Player.transform.position;
@@ -68,9 +70,9 @@ public class EnemyBase : Pawn
 
         inDetectRange = distToPlayer <= detectRange;
         inAttackRange = distToPlayer <= attackRange;
-        isOutOfLeaveRange = distToPlayer > leaveRange;
+        isOutOfLeaveDist = agent.remainingDistance > leaveRange;
 
-        if (isOutOfLeaveRange)
+        if (isOutOfLeaveDist)
         {
             GoHome();//ur drunk
             hasDetectedPlayer = false;
@@ -203,8 +205,8 @@ public class EnemyBase : Pawn
 
         UnityEditor.Handles.color = Color.green;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, detectRange);
-        UnityEditor.Handles.color = Color.blue;
-        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, leaveRange);
+        //UnityEditor.Handles.color = Color.blue;
+        //UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, leaveRange);
 
         UnityEditor.Handles.color = Color.red;
         var rot = Quaternion.Euler(0, -attackRadius * 0.5f, 0);
