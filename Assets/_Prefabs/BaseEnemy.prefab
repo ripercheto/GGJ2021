@@ -220,7 +220,7 @@ GameObject:
   m_Layer: 11
   m_Name: BaseEnemy
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -265,6 +265,7 @@ MonoBehaviour:
   body: {fileID: 2797665614996658095}
   animator: {fileID: 4629261263096107019}
   renderer: {fileID: 1268635933020139668}
+  isDead: 0
   agent: {fileID: 4225334813395936099}
   detectRange: 12
   attackRange: 2

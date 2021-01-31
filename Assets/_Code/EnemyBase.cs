@@ -69,6 +69,7 @@ public class EnemyBase : Pawn
         {
             GoHome();//ur drunk
             hasDetectedPlayer = false;
+            return;
         }
 
         if (!inDetectRange && !hasDetectedPlayer)
@@ -137,8 +138,7 @@ public class EnemyBase : Pawn
     {
         base.OnDeath();
         //enemy dead
-        EndAttack(); //cancel attack
-        StartKnockBack();
+        CancelAttack(); //cancel attack
     }
 
     protected override void DoAttack(Vector3 dir)

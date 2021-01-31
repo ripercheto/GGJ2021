@@ -34,13 +34,13 @@ public static class Reload
     [UnityEditor.Callbacks.DidReloadScripts]
     private static void OnScriptsReloaded()
     {
+        ClearConsole();
         if (!Application.isPlaying)
         {
             return;
         }
         var scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
-        ClearConsole();
     }
 
     static void ClearConsole()

@@ -14,7 +14,7 @@ public abstract class Pawn : MonoBehaviour
     protected float attackTimer;
     protected bool isAttacking;
 
-    protected Quaternion targetRot;
+    protected Quaternion targetRot = Quaternion.identity;
 
     private Coroutine attackRoutine;
     private Coroutine knockbackRoutine;
@@ -38,14 +38,17 @@ public abstract class Pawn : MonoBehaviour
     }
     public virtual void OnHit(Vector3 force, float damage)
     {
+        var health = currentHealth;
         currentHealth -= damage;
+        var isKillingBlow = health > 0 && currentHealth <= 0;
 
-        if (!HasHealth && !isDead)
+        if (!HasHealth && !isDead && !isKillingBlow)
         {
             //dead
             OnDeath();
             return;
         }
+
 
         BlinkDamage();
 
@@ -84,9 +87,9 @@ public abstract class Pawn : MonoBehaviour
             yield return null;
         }
 
+        yield return new WaitForSeconds(stats.knockbackRecoveryDelay);
         if (HasHealth)
         {
-            yield return new WaitForSeconds(stats.knockbackRecoveryDelay);
             yield return _Recover(force);
         }
 
@@ -168,10 +171,10 @@ public abstract class Pawn : MonoBehaviour
 
     private void BlinkDamage()
     {
-        Blink(Color.red, Color.white, 3, 0.1f);
+        Blink(Color.red, 3, 0.1f);
     }
 
-    protected void Blink(Color c1, Color c2, int times, float duration)
+    protected void Blink(Color color, int times, float duration)
     {
         if (blinkRoutine != null)
         {
@@ -179,22 +182,21 @@ public abstract class Pawn : MonoBehaviour
             renderer.material.SetColor("_BaseColor", lastDefaultColor);
         }
 
-        blinkRoutine = StartCoroutine(_Blink(c1, c2, times, duration));
+        blinkRoutine = StartCoroutine(_Blink(color, times, duration));
     }
-    private IEnumerator _Blink(Color c1, Color c2, int times, float colorTime)
+    private IEnumerator _Blink(Color color, int times, float colorTime)
     {
         var mat = renderer.material;
         lastDefaultColor = mat.GetColor("_BaseColor");
 
         for (int i = 0; i < times; i++)
         {
-            mat.SetColor("_BaseColor", c1);
+            mat.SetColor("_BaseColor", color);
             yield return new WaitForSeconds(colorTime);
-            mat.SetColor("_BaseColor", c2);
+            mat.SetColor("_BaseColor", lastDefaultColor);
             yield return new WaitForSeconds(colorTime);
         }
 
-        mat.SetColor("_BaseColor", lastDefaultColor);
         blinkRoutine = null;
     }
 }
