@@ -133,7 +133,9 @@ public partial class PlayerController : Pawn
     {
         base.OnDeath();
         //try again
+        carryingItem = null;
         ResetPlayer(Game.Dungeon.playerSpawnPos.position);
+        Game.Dungeon.OnPlayerDied();
     }
 
     private void UpdateHealthBar()

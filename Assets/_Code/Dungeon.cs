@@ -25,20 +25,30 @@ public class Dungeon : MonoBehaviour
     {
         if (!runStarted)
         {
-            gate.SetActive(true);
-            runStarted = true;
-
-            ActivateSpawners();
-            SpawnItemAtRandomLocation();
+            StartRun();
         }
         else if (Game.Player.carryingItem != null)
         {
-            CleanUp();
-
-            //came back with item.
-            gate.SetActive(false);
-            runStarted = false;
+            EndRun();
         }
+    }
+
+    void StartRun()
+    {
+        gate.SetActive(true);
+        runStarted = true;
+
+        ActivateSpawners();
+        SpawnItemAtRandomLocation();
+    }
+
+    void EndRun()
+    {
+        CleanUp();
+
+        //came back with item.
+        gate.SetActive(false);
+        runStarted = false;
     }
 
     public void ActivateSpawners()
@@ -77,5 +87,10 @@ public class Dungeon : MonoBehaviour
         {
             Destroy(lostItemInstance.gameObject);
         }
+    }
+
+    internal void OnPlayerDied()
+    {
+        EndRun();
     }
 }
