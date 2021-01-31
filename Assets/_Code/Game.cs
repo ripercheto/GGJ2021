@@ -23,6 +23,10 @@ public partial class Game : MonoBehaviour
     }
     #region dungeon
     public static Dungeon dungeonInstance;
+    private void OnDestroy()
+    {
+        CleanUpDungeon();
+    }
 
     public static void StartDungeon()
     {

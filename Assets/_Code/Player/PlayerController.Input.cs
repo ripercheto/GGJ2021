@@ -24,7 +24,7 @@ partial class PlayerController
         input.x = Input.GetAxis("Horizontal");
         input.y = Input.GetAxis("Vertical");
         input = Vector2.ClampMagnitude(input, 1f);
-        animator.SetBool("Walking", input.magnitude > 1f);
+        animator.SetBool("Walking", input.magnitude > 0f);
         desiredVelocity = new Vector3(input.x, 0f, input.y) * Stats.MovementSpeed;
     }
 
