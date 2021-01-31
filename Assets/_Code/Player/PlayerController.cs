@@ -37,6 +37,7 @@ public partial class PlayerController : Pawn
     private float immuneTime;
     protected override Stats Stats => stats;
     private bool IsImmune => Time.time < immuneTime;
+    protected override Color DefaultColor => Color.white;
 
     protected override void Awake()
     {
@@ -122,6 +123,6 @@ public partial class PlayerController : Pawn
     {
         base.OnDeath();
         //try again
-        ResetPlayer(Game.dungeonInstance.playerSpawnPos.position);
+        ResetPlayer(Game.Dungeon.playerSpawnPos.position);
     }
 }

@@ -80,6 +80,8 @@ public class RenderCamera : MonoBehaviour
         ownCamera.farClipPlane = camDistance;
     }
 
+    /*
+
 #if UNITY_EDITOR
     // Update is called once per frame
     void Update()
@@ -109,5 +111,5 @@ public class RenderCamera : MonoBehaviour
             lastScaleFactor = scaleFactor;
         }
     }
-#endif
+#endif*/
 }

@@ -23,7 +23,8 @@ public abstract class Pawn : MonoBehaviour
     public bool isDead;
     protected bool CanAttack => !isAttacking && attackTimer <= 0 && !IsKnockedBack;
     protected bool IsKnockedBack { get; private set; }
-    protected abstract Quaternion RecoverRotation { get; }
+    protected virtual Quaternion RecoverRotation { get; }
+    protected virtual Color DefaultColor => Color.white;
 
     protected virtual void Awake()
     {
@@ -176,7 +177,6 @@ public abstract class Pawn : MonoBehaviour
     #endregion
 
     private Coroutine blinkRoutine;
-    private Color lastDefaultColor = Color.white;
 
     private void BlinkDamage()
     {
@@ -203,10 +203,12 @@ public abstract class Pawn : MonoBehaviour
 
             foreach (var rend in renderers)
             {
-                rend.material.SetColor("_BaseColor", lastDefaultColor);
+                rend.material.SetColor("_BaseColor", DefaultColor);
             }
             yield return new WaitForSeconds(colorTime);
         }
+
+
 
         blinkRoutine = null;
     }

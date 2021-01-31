@@ -13,20 +13,35 @@ public class EnemySpawner : MonoBehaviour
     public float range = 4;
     public int count = 5;
     public int maxRandomAdditions = 3;
-    private void Start()
+
+    public List<EnemyBase> enemies = new List<EnemyBase>();
+
+    public void CleanUp()
     {
-        Spawn();
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            var e = enemies[i];
+            if (e != null)
+            {
+                Destroy(e.gameObject);
+            }
+
+            enemies.RemoveAt(i);
+            i--;
+        }
     }
-    void Spawn()
+
+    public void Spawn()
     {
-        count += Random.Range(1, maxRandomAdditions + 1);
+        var newCount = count + Random.Range(1, maxRandomAdditions + 1);
         var agent = gameObject.AddComponent<NavMeshAgent>();
+        agent.hideFlags = HideFlags.HideAndDontSave;
         var path = agent.path;
 
         var maxCount = 0;
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < newCount; i++)
         {
-            if (maxCount > 100 * count)
+            if (maxCount > 100 * newCount)
             {
                 Debug.LogError("Something has gone terriblt wrong wit hthe navmesh");
                 return;
@@ -36,6 +51,11 @@ public class EnemySpawner : MonoBehaviour
             randomPoint.y = 0;
             randomPoint *= range;
             randomPoint += transform.position;
+
+            if (agent == null || agent.enabled == false)
+            {
+                break;
+            }
 
             if (!agent.CalculatePath(randomPoint, path))
             {
@@ -51,6 +71,7 @@ public class EnemySpawner : MonoBehaviour
             }
 
             var enemy = Instantiate(Game.Settings.enemyPrefab, randomPoint, Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up), transform);
+            enemies.Add(enemy);
         }
 
         Destroy(agent);

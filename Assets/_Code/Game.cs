@@ -9,24 +9,23 @@ public partial class Game : MonoBehaviour
     public static Game Instance;
     public static GameSettings Settings => Instance.settings;
 
+    public Dungeon dungeon;
+    public static Dungeon Dungeon => Instance.dungeon;
+
     [SerializeField]
     private GameSettings settings;
-
-    public float dungeonTextureScale = 0.1f;
 
     private void Awake()
     {
         Instance = this;
     }
-    private void Start() {
+
+
+    private void Start()
+    {
         StartDungeon();
     }
     #region dungeon
-    public static Dungeon dungeonInstance;
-    private void OnDestroy()
-    {
-        CleanUpDungeon();
-    }
 
     public static void StartDungeon()
     {
@@ -34,22 +33,18 @@ public partial class Game : MonoBehaviour
         //generate random item placements
         //move player and start battle
 
-        dungeonInstance = Instantiate(Settings.dungeonPrefab);
+        Dungeon.ActivateSpawners();
 
-        Player.ResetPlayer(dungeonInstance.playerSpawnPos.position);
-    }
 
-    private void OnApplicationQuit()
-    {
-        CleanUpDungeon();
+        //spawn items
+
+
+        Player.ResetPlayer(Dungeon.playerSpawnPos.position);
     }
 
     public void CleanUpDungeon()
     {
-        if (dungeonInstance != null)
-        {
-            Destroy(dungeonInstance.gameObject);
-        }
+        Dungeon.CleanUp();
     }
     #endregion
 
@@ -75,7 +70,7 @@ public static class Reload
         activeObj.transform.position = hitInfo.point;
     }
 
-    [UnityEditor.Callbacks.DidReloadScripts]
+    /*[UnityEditor.Callbacks.DidReloadScripts]
     private static void OnScriptsReloaded()
     {
         ClearConsole();
@@ -85,7 +80,7 @@ public static class Reload
         }
         var scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
-    }
+    }*/
 
     static void ClearConsole()
     {

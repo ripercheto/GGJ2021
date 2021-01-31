@@ -607,6 +607,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &551476468903781844
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +654,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &605564217327281421
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,6 +701,7 @@ MonoBehaviour:
   range: 16.75
   count: 6
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &758425452787149699
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,6 +841,7 @@ MonoBehaviour:
   range: 10.9
   count: 4
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &1109040821739533084
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,6 +888,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &1134686158502458880
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,6 +935,7 @@ MonoBehaviour:
   range: 16.75
   count: 6
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &1140599318692369458
 GameObject:
   m_ObjectHideFlags: 0
@@ -976,6 +982,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &1279651553463624560
 GameObject:
   m_ObjectHideFlags: 0
@@ -4852,6 +4859,7 @@ MonoBehaviour:
   range: 16.75
   count: 6
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &4099843114786751875
 GameObject:
   m_ObjectHideFlags: 0
@@ -5025,6 +5033,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &4227281828103627370
 GameObject:
   m_ObjectHideFlags: 0
@@ -5103,6 +5112,7 @@ MonoBehaviour:
   range: 10.9
   count: 4
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &4705480077316430081
 GameObject:
   m_ObjectHideFlags: 0
@@ -5149,6 +5159,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &4864182406631861135
 GameObject:
   m_ObjectHideFlags: 0
@@ -5604,6 +5615,7 @@ MonoBehaviour:
   range: 10.9
   count: 4
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &5489480113549943409
 GameObject:
   m_ObjectHideFlags: 0
@@ -7114,6 +7126,7 @@ MonoBehaviour:
   range: 16.75
   count: 6
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &5680507582838685455
 GameObject:
   m_ObjectHideFlags: 0
@@ -8533,6 +8546,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpawnPos: {fileID: 3537160774005701191}
+  spawners:
+  - {fileID: 8019758462881414047}
+  - {fileID: 3173545099608516331}
+  - {fileID: 303039510585102614}
+  - {fileID: 3882479505173877662}
+  - {fileID: 6265173270359648277}
+  - {fileID: 8536269224422351897}
+  - {fileID: 1769773635958898685}
+  - {fileID: 7254652315334115143}
+  - {fileID: 3093431636224349989}
+  - {fileID: 286851698796840422}
+  - {fileID: 3130924597698151869}
+  - {fileID: 7069587956150939288}
+  - {fileID: 638032874234505934}
+  - {fileID: 1422654850281097208}
+  - {fileID: 5148412888519776320}
+  - {fileID: 4068065342440774670}
+  - {fileID: 9006104357147410459}
+  - {fileID: 586264051066060743}
 --- !u!1 &7099250858518203361
 GameObject:
   m_ObjectHideFlags: 0
@@ -8579,6 +8611,7 @@ MonoBehaviour:
   range: 16.75
   count: 6
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &7167414707691050650
 GameObject:
   m_ObjectHideFlags: 0
@@ -9258,6 +9291,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &7684999649443037642
 GameObject:
   m_ObjectHideFlags: 0
@@ -10537,6 +10571,7 @@ MonoBehaviour:
   range: 10.9
   count: 4
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &8844907865852610163
 GameObject:
   m_ObjectHideFlags: 0
@@ -11268,6 +11303,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &9138964199856868805
 GameObject:
   m_ObjectHideFlags: 0
@@ -11314,6 +11350,7 @@ MonoBehaviour:
   range: 5
   count: 2
   maxRandomAdditions: 3
+  enemies: []
 --- !u!1 &9208407263078211120
 GameObject:
   m_ObjectHideFlags: 0
