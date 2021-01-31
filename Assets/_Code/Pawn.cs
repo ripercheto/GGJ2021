@@ -189,7 +189,10 @@ public abstract class Pawn : MonoBehaviour
         {
             StopCoroutine(blinkRoutine);
         }
-
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
         blinkRoutine = StartCoroutine(_Blink(color, times, duration));
     }
     private IEnumerator _Blink(Color color, int times, float colorTime)

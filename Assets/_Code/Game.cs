@@ -39,6 +39,11 @@ public partial class Game : MonoBehaviour
         Player.ResetPlayer(dungeonInstance.playerSpawnPos.position);
     }
 
+    private void OnApplicationQuit()
+    {
+        CleanUpDungeon();
+    }
+
     public void CleanUpDungeon()
     {
         if (dungeonInstance != null)
