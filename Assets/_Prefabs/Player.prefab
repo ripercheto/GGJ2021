@@ -433,7 +433,7 @@ MonoBehaviour:
   attackMovementForce: 20
   attackDurationFailSafeTime: 0.5
   attackTravelDistance: 3
-  levelingConstant: 0.3
+  xpPerLevel: 60
   input: {x: 0, y: 0}
   maxAcceleration: 100
   maxAirAcceleration: 100
@@ -442,7 +442,7 @@ MonoBehaviour:
   tiltAmount: 0.1
   stats:
     turnFactor: 20
-    health: 10
+    health: 3
     damage: 1
     attackRate: 0.5
     movementSpeed: 10

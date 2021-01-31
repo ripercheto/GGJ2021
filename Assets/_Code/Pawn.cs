@@ -42,20 +42,15 @@ public abstract class Pawn : MonoBehaviour
         currentHealth -= damage;
         var isKillingBlow = health > 0 && currentHealth <= 0;
 
-        if (!HasHealth && !isDead && !isKillingBlow)
+        if (!HasHealth && !isDead)
         {
             //dead
             OnDeath();
-            return;
         }
-
 
         BlinkDamage();
 
-        if (knockbackRoutine != null)
-        {
-            StopCoroutine(knockbackRoutine);
-        }
+        CancelKnockback(false);
         knockbackRoutine = StartCoroutine(_Knockback(force));
     }
     #endregion
@@ -114,6 +109,19 @@ public abstract class Pawn : MonoBehaviour
         IsKnockedBack = false;
         body.constraints = defaultConstraints;
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
+    }
+
+    public void CancelKnockback(bool shouldEnd)
+    {
+        if (knockbackRoutine != null)
+        {
+            StopCoroutine(knockbackRoutine);
+        }
+
+        if (shouldEnd)
+        {
+            EndKnockBack();
+        }
     }
     #endregion
 

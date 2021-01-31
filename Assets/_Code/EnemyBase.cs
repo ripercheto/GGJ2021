@@ -10,6 +10,7 @@ public class EnemyBase : Pawn
 
     [Header("References")]
     public NavMeshAgent agent;
+    public Material deathMaterial;
     [Header("Ranges")]
     public float detectRange = 12;
     public float attackRange = 3;

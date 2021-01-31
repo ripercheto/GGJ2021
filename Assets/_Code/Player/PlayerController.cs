@@ -66,6 +66,14 @@ public partial class PlayerController : Pawn
         HandleRotationUpdate();
     }
 
+    public void ResetPlayer(Vector3 targetPos)
+    {
+        currentHealth = Stats.Health;
+        CancelAttack(true);
+        CancelKnockback(true);
+        transform.position = targetPos;
+    }
+
     public override void OnHit(Vector3 from, float damage)
     {
         if (IsImmune)
@@ -98,7 +106,7 @@ public partial class PlayerController : Pawn
     {
         coll.material = defaultMat;
         immuneTime = Time.time + immuneDuration;
-        Blink(Color.blue, 1, immuneDuration);
+        Blink(Color.blue, 4, immuneDuration/4f);
 
         transform.rotation = RecoverRotation;
         if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out var hit, 3f, LayerMask.GetMask("World")))
@@ -109,8 +117,11 @@ public partial class PlayerController : Pawn
         base.EndKnockBack();
     }
 
+
     protected override void OnDeath()
     {
-        Debug.LogError("DEAD, FAILED TO DELIVED ITEM, GO BACK TO SHOP");
+        base.OnDeath();
+        //try again
+        ResetPlayer(Game.dungeonInstance.playerSpawnPos.position);
     }
 }

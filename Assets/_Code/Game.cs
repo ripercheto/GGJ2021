@@ -20,7 +20,7 @@ public partial class Game : MonoBehaviour
     }
 
     #region dungeon
-    private static Dungeon dungeonReference;
+    public static Dungeon dungeonInstance;
 
     public static void StartDungeon()
     {
@@ -28,14 +28,16 @@ public partial class Game : MonoBehaviour
         //generate random item placements
         //move player and start battle
 
-        dungeonReference = Instantiate(Settings.dungeonPrefab);
+        dungeonInstance = Instantiate(Settings.dungeonPrefab);
+
+        Player.ResetPlayer(dungeonInstance.playerSpawnPos.position);
     }
 
     public void CleanUpDungeon()
     {
-        if (dungeonReference != null)
+        if (dungeonInstance != null)
         {
-            Destroy(dungeonReference.gameObject);
+            Destroy(dungeonInstance.gameObject);
         }
     }
     #endregion
