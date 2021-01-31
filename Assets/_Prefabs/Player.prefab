@@ -432,6 +432,7 @@ MonoBehaviour:
     turnFactor: 20
     knockbackForce: 3
     knockbackDuration: 0.5
+    knockbackRecoveryDelay: 0
     knockbackRecoveryTime: 0.5
   body: {fileID: 7040582324116481431}
   animator: {fileID: 0}

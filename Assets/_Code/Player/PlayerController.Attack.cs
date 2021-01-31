@@ -36,8 +36,6 @@ partial class PlayerController
         attackTriggerArea.gameObject.SetActive(true);
         attackTriggerArea.transform.localPosition = triggerAreaOffset + dir * attackTriggerDirOffset;
         attackTriggerArea.transform.rotation = attackRotation;
-
-        body.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
 
     protected override IEnumerator _Attack(Vector3 dir)
@@ -59,6 +57,10 @@ partial class PlayerController
             var enemiesInTrigger = attackTriggerArea.InTrigger;
             foreach (var item in enemiesInTrigger)
             {
+                if (!item.HasHealth)
+                {
+                    continue;
+                }
                 if (hitEnemies.Contains(item))
                 {
                     continue;
@@ -79,8 +81,6 @@ partial class PlayerController
     protected override void EndAttack()
     {
         attackTriggerArea.gameObject.SetActive(false);
-        body.AddForce(Vector3.zero, ForceMode.VelocityChange);
-
         base.EndAttack();
     }
 }
