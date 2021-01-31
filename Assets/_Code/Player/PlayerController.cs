@@ -12,6 +12,10 @@ public partial class PlayerController : Pawn
 {
     public static PlayerController instance;
 
+    public Item carryingItem;
+
+    public Transform healthbar, cooldownbar;
+
     [SerializeField]
     private UpgradeableStats stats;
     public int Level
@@ -28,6 +32,7 @@ public partial class PlayerController : Pawn
     [Header("Damage")]
     public float immuneDuration = 1f;
     public Collider coll;
+    public Transform healthBar, cooldownBar;
 
     public UnityEvent onPlayerHit = new UnityEvent();
     public UnityEvent onEnemyHit = new UnityEvent();
@@ -46,6 +51,7 @@ public partial class PlayerController : Pawn
         HandleExperience();
 
         base.Awake();
+        UpdateHealthBar();
 
         body.centerOfMass = Vector3.up;
         defaultMat = coll.sharedMaterial;
@@ -62,6 +68,8 @@ public partial class PlayerController : Pawn
 
     void Update()
     {
+        UpdateCooldownhBar();
+
         HandleAttackCooldown();
         ReadInput();
         HandleRotationUpdate();
@@ -70,6 +78,7 @@ public partial class PlayerController : Pawn
     public void ResetPlayer(Vector3 targetPos)
     {
         currentHealth = Stats.Health;
+        UpdateHealthBar();
         CancelAttack(true);
         CancelKnockback(true);
         transform.position = targetPos;
@@ -94,6 +103,7 @@ public partial class PlayerController : Pawn
         }
 
         base.OnHit(from, damage);
+        UpdateHealthBar();
         onPlayerHit.Invoke();
     }
 
@@ -107,7 +117,7 @@ public partial class PlayerController : Pawn
     {
         coll.material = defaultMat;
         immuneTime = Time.time + immuneDuration;
-        Blink(Color.blue, 4, immuneDuration/4f);
+        Blink(Color.cyan, 4, immuneDuration / 4f);
 
         transform.rotation = RecoverRotation;
         if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out var hit, 3f, LayerMask.GetMask("World")))
@@ -124,5 +134,18 @@ public partial class PlayerController : Pawn
         base.OnDeath();
         //try again
         ResetPlayer(Game.Dungeon.playerSpawnPos.position);
+    }
+
+    private void UpdateHealthBar()
+    {
+        healthBar.transform.localScale = new Vector3(currentHealth / stats.Health, 1, 1);
+    }
+
+    private void UpdateCooldownhBar()
+    {
+        var a = attackTimer / stats.AttackRate;
+
+        cooldownbar.gameObject.SetActive(a > 0.1f);
+        cooldownbar.transform.localScale = new Vector3(attackTimer / stats.AttackRate, 1, 1);
     }
 }

@@ -53,15 +53,7 @@ public class MyWindow : EditorWindow
             return;
         }
 
-        var rend = activeObj.GetComponentInChildren<Renderer>();
-        if (rend == null)
-        {
-            activeObj.transform.position = hitInfo.point;
-            return;
-        }
-
-        var bounds = rend.bounds;
-        activeObj.transform.position = hitInfo.point + Vector3.up * (bounds.extents.y);
+        activeObj.transform.position = hitInfo.point;
 
         /*
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
