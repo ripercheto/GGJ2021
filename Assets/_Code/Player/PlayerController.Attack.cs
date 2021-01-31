@@ -6,71 +6,49 @@ partial class PlayerController
 {
     [Header("Attack")]
     public TriggerArea attackTriggerArea;
+    public float attackTriggerDirOffset = 1;
 
-    public float attackMovementDistance = 3;
+    public float attackMovementForce = 20;
     public float attackDuration = 0.1f;
 
-    private float attackTimer;
-    private Coroutine attackRoutine;
-    private List<EnemyBase> hitEnemies;
+    private List<EnemyBase> hitEnemies = new List<EnemyBase>();
 
     private Vector3 attackDir;
     private Quaternion attackRotation;
+    private Vector3 triggerAreaOffset;
 
-    private bool CanAttack => attackTimer <= 0;
-    private bool isAttacking;
+    protected override Quaternion RecoverRotation => Quaternion.identity;
 
-    void HandleAttackCooldown()
+    void InitAttack()
     {
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-        }
+        triggerAreaOffset = attackTriggerArea.transform.localPosition;
     }
 
-    void Attack(Vector3 dir)
+    protected override void PrepareAttack(Vector3 dir)
     {
-        if (!CanAttack)
-        {
-            return;
-        }
+        base.PrepareAttack(dir);
+        attackDir = dir * attackMovementForce;
 
-        if (attackRoutine != null)
-        {
-            StopCoroutine(attackRoutine);
-        }
-        attackRoutine = StartCoroutine(_Attack(dir));
-    }
-
-    void PrepareAttack(Vector3 dir)
-    {
-        isAttacking = true;
-        attackDir = dir;
         //prepare attack rotation
-        lastLookDir = attackDir;
-        modelPivot.localRotation = attackRotation = lookRot = targetRot = Quaternion.LookRotation(attackDir);
+        Rotation = attackRotation = lastLookRot = targetRot = Quaternion.LookRotation(dir);
 
-        //attackTriggerArea.gameObject.SetActive(true);
-        attackTriggerArea.transform.localPosition = attackDir;
+        attackTriggerArea.gameObject.SetActive(true);
+        attackTriggerArea.transform.localPosition = triggerAreaOffset + dir * attackTriggerDirOffset;
         attackTriggerArea.transform.rotation = attackRotation;
 
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
 
-    private IEnumerator _Attack(Vector3 dir)
+    protected override IEnumerator _Attack(Vector3 dir)
     {
         PrepareAttack(dir);
 
-        var startPos = transform.position;
-        var targetPos = startPos + dir * attackMovementDistance;
         var t = 0f;
-        hitEnemies = new List<EnemyBase>();
+        hitEnemies.Clear();
         while (t < attackDuration)
         {
             t += Time.deltaTime;
-            var a = t / attackDuration;
-            var newPos = Vector3.Lerp(startPos, targetPos, a);
-            body.MovePosition(newPos);
+            //body.AddForce(dir * attackMovementDistance, ForceMode.VelocityChange);
 
             var enemiesInTrigger = attackTriggerArea.InTrigger;
             foreach (var item in enemiesInTrigger)
@@ -80,23 +58,23 @@ partial class PlayerController
                     continue;
                 }
 
-                item.OnHit(transform.position, stats.damage);
+                var dirToEnemy = (item.transform.position - transform.position).normalized;
+                var force = (dirToEnemy + dir).normalized * stats.knockbackForce;
+                item.OnHit(force, stats.damage);
+                onEnemyHit.Invoke();
                 hitEnemies.Add(item);
             }
 
             yield return null;
         }
-        EnadAttack();
+        EndAttack();
     }
 
-    void EnadAttack()
+    protected override void EndAttack()
     {
-        //attackTriggerArea.gameObject.SetActive(false);
+        attackTriggerArea.gameObject.SetActive(false);
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
 
-        attackTimer = stats.attackRate;
-
-        attackRoutine = null;
-        isAttacking = false;
+        base.EndAttack();
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6643166373687043745}
   - component: {fileID: 6643166373687043750}
   m_Layer: 9
-  m_Name: New Game Object
+  m_Name: Wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,7 +535,7 @@ MonoBehaviour:
   - {x: -59.323833, y: 0, z: -20.243172}
   - {x: 21.296005, y: 0, z: -20.38139}
   m_Extrude: 2
-  m_EditMode: 3
+  m_EditMode: 0
   m_FlipNormals: 0
   isOnGrid: 0
 --- !u!23 &6643166373687043744
@@ -614,7 +614,7 @@ GameObject:
   - component: {fileID: 6643166373731927958}
   - component: {fileID: 6643166373731927959}
   m_Layer: 9
-  m_Name: New Game Object (1)
+  m_Name: Wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1134,7 +1134,7 @@ MonoBehaviour:
   - {x: -82.80265, y: 0, z: -7.4916162}
   - {x: 6.3374767, y: 0, z: -7.9325004}
   m_Extrude: 2
-  m_EditMode: 3
+  m_EditMode: 0
   m_FlipNormals: 0
   isOnGrid: 0
 --- !u!23 &6643166373731927953
@@ -1302,7 +1302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6643166375016354490}
   - component: {fileID: 8612675097866792914}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: World
   m_TagString: Untagged
   m_Icon: {fileID: 0}

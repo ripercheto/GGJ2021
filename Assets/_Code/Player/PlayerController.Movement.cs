@@ -12,8 +12,6 @@ partial class PlayerController
     [SerializeField, Range(0, 90)]
     float maxGroundAngle = 25f;
 
-    Rigidbody body;
-
     Vector3 velocity, desiredVelocity;
 
     Vector3 contactNormal;
@@ -21,26 +19,30 @@ partial class PlayerController
     int groundContactCount;
 
     bool OnGround => groundContactCount > 0;
-
-
+    bool HasPlayerLostInput => isAttacking || IsKnockedBack;
     float minGroundDotProduct;
-
-    void OnValidate()
-    {
-        minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-    }
 
     void InitMovement()
     {
-        body = GetComponent<Rigidbody>();
-        OnValidate();
+        minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
         //rotation
-        targetRot = lookRot = Quaternion.identity;
+        targetRot = Quaternion.identity;
     }
 
     private void HandleMovement()
     {
+        if (isAttacking)
+        {
+            body.velocity = attackDir;
+            return;
+        }
+
+        if (HasPlayerLostInput)
+        {
+            return;
+        }
+
         UpdateState();
         AdjustVelocity();
         body.velocity = velocity;
@@ -122,14 +124,18 @@ partial class PlayerController
     public Transform modelPivot;
     [Range(0, 1)]
     public float tiltAmount;
-
     private Vector3 lastLookDir;
-    private Quaternion lookRot;
-    private Quaternion targetRot;
+    private Quaternion lastLookRot;
+
+    private Quaternion Rotation
+    {
+        get => modelPivot.rotation;
+        set => modelPivot.rotation = value;
+    }
 
     private void HandleRotationUpdate()
     {
-        if (isAttacking)
+        if (HasPlayerLostInput)
         {
             return;
         }
@@ -139,21 +145,19 @@ partial class PlayerController
 
     void HandleModelTargetRot()
     {
-        var maxSpeedFraction = stats.movementSpeed * 0.8f;
+        var maxSpeedFraction = stats.movementSpeed * 0.1f;
         var isVelAboveFraction = body.velocity.magnitude > maxSpeedFraction;
-
         if (playerInput.magnitude > 0f && isVelAboveFraction)
         {
             lastLookDir = body.velocity.normalized;
-            lookRot = Quaternion.LookRotation(lastLookDir);
+            lastLookRot = Quaternion.LookRotation(lastLookDir);
         }
-
-        targetRot = isVelAboveFraction ? Quaternion.LookRotation(lastLookDir + Vector3.down * tiltAmount) : lookRot;
+        targetRot = isVelAboveFraction ? Quaternion.LookRotation(lastLookDir + Vector3.down * tiltAmount) : lastLookRot;
     }
 
     private void RotateModelTowardsTarget()
     {
-        modelPivot.localRotation = Quaternion.Lerp(modelPivot.localRotation, targetRot, 20 * Time.deltaTime);
+        Rotation = Quaternion.Lerp(Rotation, targetRot, stats.turnFactor * Time.deltaTime);
     }
     #endregion
 }

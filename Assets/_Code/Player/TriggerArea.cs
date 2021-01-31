@@ -24,7 +24,12 @@ public class TriggerArea : MonoBehaviour
         }
     }
 
-    public List<EnemyBase> inTrigger = new List<EnemyBase>();
+    private List<EnemyBase> inTrigger = new List<EnemyBase>();
+
+    private void OnDisable()
+    {
+        inTrigger.Clear();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -54,6 +59,11 @@ public class TriggerArea : MonoBehaviour
         {
             return;
         }
+        if (!inTrigger.Contains(enemy))
+        {
+            return;
+        }
+
         inTrigger.Remove(enemy);
     }
 }
