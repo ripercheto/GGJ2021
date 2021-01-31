@@ -18,7 +18,9 @@ public partial class Game : MonoBehaviour
     {
         Instance = this;
     }
-
+    private void Start() {
+        StartDungeon();
+    }
     #region dungeon
     public static Dungeon dungeonInstance;
 
