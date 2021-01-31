@@ -149,7 +149,9 @@ partial class PlayerController
         var isVelAboveFraction = body.velocity.magnitude > maxSpeedFraction;
         if (playerInput.magnitude > 0f && isVelAboveFraction)
         {
-            lastLookDir = body.velocity.normalized;
+            lastLookDir = body.velocity;
+            lastLookDir.y = 0;
+            lastLookDir.Normalize();
             lastLookRot = Quaternion.LookRotation(lastLookDir);
         }
         targetRot = isVelAboveFraction ? Quaternion.LookRotation(lastLookDir + Vector3.down * tiltAmount) : lastLookRot;

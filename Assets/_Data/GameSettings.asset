@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   camera:
-    playerHitStress: 0.5
-    enemyHitStress: 0.2
+    playerHitStress: 0.8
+    enemyHitStress: 0.4

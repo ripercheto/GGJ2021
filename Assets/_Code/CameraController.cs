@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
         Game.Player.onEnemyHit.AddListener(OnHitEnemy);
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         transform.position = Vector3.Lerp(transform.position, target.position + offset, 10 * Time.deltaTime);
     }

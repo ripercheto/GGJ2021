@@ -64,7 +64,6 @@ public partial class PlayerController : Pawn
         }
 
         base.OnHit(from, damage);
-
         vulnerableTime = Time.time + invulnerabilityTime;
         onPlayerHit.Invoke();
     }

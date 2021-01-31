@@ -8,6 +8,7 @@ public abstract class Pawn : MonoBehaviour
     public Stats stats;
     public Rigidbody body;
     public Animator animator;
+    public MeshRenderer renderer;
 
     protected float currentHealth;
     protected float attackTimer;
@@ -40,6 +41,8 @@ public abstract class Pawn : MonoBehaviour
             OnDeath();
             return;
         }
+
+        BlinkDamage();
 
         if (knockbackRoutine != null)
         {
@@ -79,6 +82,7 @@ public abstract class Pawn : MonoBehaviour
 
         if (HasHealth)
         {
+            yield return new WaitForSeconds(stats.knockbackRecoveryDelay);
             yield return _Recover(force);
         }
 
@@ -140,4 +144,37 @@ public abstract class Pawn : MonoBehaviour
         }
     }
     #endregion
+
+    private Coroutine blinkRoutine;
+
+    private void BlinkDamage()
+    {
+        Blink(Color.red, Color.white, 3, 0.1f);
+    }
+
+    protected void Blink(Color c1, Color c2, int times, float duration)
+    {
+        if (blinkRoutine != null)
+        {
+            StopCoroutine(blinkRoutine);
+        }
+
+        blinkRoutine = StartCoroutine(_Blink(c1, c2, times, duration));
+    }
+    private IEnumerator _Blink(Color c1, Color c2, int times, float colorTime)
+    {
+        var mat = renderer.material;
+        var defaultColor = mat.GetColor("_BaseColor");
+
+        for (int i = 0; i < times; i++)
+        {
+            mat.SetColor("_BaseColor", c1);
+            yield return new WaitForSeconds(colorTime);
+            mat.SetColor("_BaseColor", c2);
+            yield return new WaitForSeconds(colorTime);
+        }
+
+        mat.SetColor("_BaseColor", defaultColor);
+        blinkRoutine = null;
+    }
 }

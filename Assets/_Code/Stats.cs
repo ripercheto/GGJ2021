@@ -15,5 +15,6 @@ public class Stats
     [Header("Knockback")]
     public float knockbackForce = 1;
     public float knockbackDuration = 0.5f;
+    public float knockbackRecoveryDelay = 1f;
     public float knockbackRecoveryTime = 0.5f;
 }

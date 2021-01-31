@@ -260,12 +260,16 @@ MonoBehaviour:
     turnFactor: 20
     knockbackForce: 3
     knockbackDuration: 0.5
+    knockbackRecoveryDelay: 1
     knockbackRecoveryTime: 0.5
   body: {fileID: 2797665614996658095}
   animator: {fileID: 4629261263096107019}
+  renderer: {fileID: 1268635933020139668}
   agent: {fileID: 4225334813395936099}
   detectRange: 12
-  attackRange: 3
+  attackRange: 2
+  stoppingDistance: 3
+  inStoppingDistanceAcceleration: 50
   attackRadius: 45
   attackAnticipationTime: 0.15
 --- !u!54 &2797665614996658095
@@ -295,7 +299,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 10
-  m_Acceleration: 50
+  m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 0
   m_StoppingDistance: 3
