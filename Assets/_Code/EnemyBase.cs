@@ -54,13 +54,14 @@ public class EnemyBase : Pawn
             return;
         }
 
+        animator.SetBool("Walking", agent.enabled && agent.desiredVelocity.magnitude > 0);
+
         HandleAttackCooldown();
 
         if (IsKnockedBack || isAttacking)
         {
             return;
         }
-
 
 
         LookTowardsTarget();

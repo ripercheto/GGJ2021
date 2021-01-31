@@ -106,7 +106,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnemyAnimationController
+  m_Name: PlayerAnimationController
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Attack
@@ -142,7 +142,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walking
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3851530322367268409}
@@ -155,7 +155,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: f56c13fdd5236b84ab7ad0449172f4cc, type: 2}
+  m_Motion: {fileID: 7400000, guid: f55e030a42bdaf047ae583241db4a72f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -223,7 +223,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Attack
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2785751009983663072}
@@ -237,7 +237,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: fab89de7d2ff5b142a27b2fb44773d1f, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2616b2daf7686004388b9f21bec50df0, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -264,7 +264,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: da2dd4f747ac78c42be90674b466665e, type: 2}
+  m_Motion: {fileID: -623603649343465320, guid: f60846530383a9646bb5ae58dfed0869,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

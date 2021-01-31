@@ -117,7 +117,7 @@ public partial class PlayerController : Pawn
     {
         coll.material = defaultMat;
         immuneTime = Time.time + immuneDuration;
-        Blink(Color.cyan, 4, immuneDuration / 4f);
+        Blink(Color.cyan, 8, immuneDuration / 8f);
 
         transform.rotation = RecoverRotation;
         if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out var hit, 3f, LayerMask.GetMask("World")))
@@ -133,7 +133,9 @@ public partial class PlayerController : Pawn
     {
         base.OnDeath();
         //try again
+        carryingItem = null;
         ResetPlayer(Game.Dungeon.playerSpawnPos.position);
+        Game.Dungeon.OnPlayerDied();
     }
 
     private void UpdateHealthBar()
