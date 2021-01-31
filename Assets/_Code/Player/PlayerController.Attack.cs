@@ -36,6 +36,8 @@ partial class PlayerController
         attackTriggerArea.gameObject.SetActive(true);
         attackTriggerArea.transform.localPosition = triggerAreaOffset + dir * attackTriggerDirOffset;
         attackTriggerArea.transform.rotation = attackRotation;
+
+        animator.SetTrigger("Attack");
     }
 
     protected override IEnumerator _Attack(Vector3 dir)

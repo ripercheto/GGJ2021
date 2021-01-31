@@ -8,7 +8,7 @@ public abstract class Pawn : MonoBehaviour
     [Header("References")]
     public Rigidbody body;
     public Animator animator;
-    public MeshRenderer renderer;
+    public Renderer[] renderers;
 
     protected float currentHealth;
     protected float attackTimer;
@@ -176,7 +176,7 @@ public abstract class Pawn : MonoBehaviour
     #endregion
 
     private Coroutine blinkRoutine;
-    private Color lastDefaultColor;
+    private Color lastDefaultColor = Color.white;
 
     private void BlinkDamage()
     {
@@ -188,21 +188,24 @@ public abstract class Pawn : MonoBehaviour
         if (blinkRoutine != null)
         {
             StopCoroutine(blinkRoutine);
-            renderer.material.SetColor("_BaseColor", lastDefaultColor);
         }
 
         blinkRoutine = StartCoroutine(_Blink(color, times, duration));
     }
     private IEnumerator _Blink(Color color, int times, float colorTime)
     {
-        var mat = renderer.material;
-        lastDefaultColor = mat.GetColor("_BaseColor");
-
         for (int i = 0; i < times; i++)
         {
-            mat.SetColor("_BaseColor", color);
+            foreach (var rend in renderers)
+            {
+                rend.material.SetColor("_BaseColor", color);
+            }
             yield return new WaitForSeconds(colorTime);
-            mat.SetColor("_BaseColor", lastDefaultColor);
+
+            foreach (var rend in renderers)
+            {
+                rend.material.SetColor("_BaseColor", lastDefaultColor);
+            }
             yield return new WaitForSeconds(colorTime);
         }
 
