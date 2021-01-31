@@ -20,7 +20,7 @@ public class QuestBehaviour : MonoBehaviour
     
     public Item[] AvailableItems;
 
-    public GameObject CustomerPrefab;
+    public CustomerBehaviour CustomerPrefab;
 
     void Start() {
         LostItem_UI.sprite = LostItem.icon;
@@ -34,8 +34,8 @@ public class QuestBehaviour : MonoBehaviour
         
     }
 
-    void SetRandomLostItem() {
-        LostItem = AvailableItems[Random.Range(0, AvailableItems.Length)];
+    void SetLostItem(Item a_Item) {
+        LostItem = a_Item;
         LostItem_UI.sprite = LostItem.icon;
         print("Setting lost item: " + LostItem.name);
     }
@@ -52,10 +52,10 @@ public class QuestBehaviour : MonoBehaviour
 
     void InitNextCustomer() {
         CurrentCustomer++;
-        SetRandomLostItem();
+        SetLostItem(GetRandomItem());
 
-        GameObject NewCustomer = Instantiate<GameObject>(CustomerPrefab); //Create new customer
-        NewCustomer.GetComponent<NPCBehaviour>().Set_SpeechBubbleIcon(LostItem.icon); //Set the NPC speech bubble icon
+        CustomerBehaviour NewCustomer = Instantiate<CustomerBehaviour>(CustomerPrefab); //Create new customer
+        NewCustomer.Set_SpeechBubbleIcon(LostItem.icon); //Set the NPC speech bubble icon
     }
 
     //Temporary reset function
@@ -63,10 +63,13 @@ public class QuestBehaviour : MonoBehaviour
         if (CurrentCustomer > 4) {
             CurrentCustomer = 0;
             ResetSatisfactionUI();
-            SetRandomLostItem();
+            SetLostItem(GetRandomItem());
         }
     }
 
+    Item GetRandomItem() {
+        return AvailableItems[Random.Range(0, AvailableItems.Length)];
+    }
     //Temporary customer spawner
     //int someTime = 100;
     //int someDynamicTime = 0;
@@ -85,7 +88,7 @@ public class QuestBehaviour : MonoBehaviour
         //Temporary
         if (Input.GetKeyUp("o")) {
             CheckAndReset();
-            HandinFoundItem(AvailableItems[Random.Range(0, AvailableItems.Length)]);   
+            HandinFoundItem(GetRandomItem());   
         }
     }
 

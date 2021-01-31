@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCBehaviour : MonoBehaviour
+public class CustomerBehaviour : MonoBehaviour
 {
     public GameObject SpeechBubble;
     public SpriteRenderer LostItemIcon_Renderer;
