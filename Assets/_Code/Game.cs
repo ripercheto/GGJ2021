@@ -20,7 +20,6 @@ public partial class Game : MonoBehaviour
         Instance = this;
     }
 
-
     private void Start()
     {
         if (!Application.isPlaying)
@@ -28,23 +27,8 @@ public partial class Game : MonoBehaviour
             return;
         }
 
-        StartDungeon();
-    }
-    #region dungeon
-
-    public static void StartDungeon()
-    {
-        Dungeon.ActivateSpawners();
-        Dungeon.SpawnItemAtRandomLocation();
         Player.ResetPlayer(Dungeon.playerSpawnPos.position);
     }
-
-    public void CleanUpDungeon()
-    {
-        Dungeon.CleanUp();
-    }
-    #endregion
-
 }
 #if UNITY_EDITOR
 public static class Reload

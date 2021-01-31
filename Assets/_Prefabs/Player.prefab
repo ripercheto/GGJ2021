@@ -1567,7 +1567,7 @@ MonoBehaviour:
     turnFactor: 20
     health: 3
     damage: 1
-    attackRate: 0.5
+    attackRate: 0.75
     movementSpeed: 10
     knockbackForce: 3
     knockbackDuration: 0.5

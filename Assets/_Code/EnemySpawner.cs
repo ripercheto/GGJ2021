@@ -74,7 +74,7 @@ public class EnemySpawner : MonoBehaviour
             enemies.Add(enemy);
         }
 
-        DestroyImmediate(agent);
+        Destroy(agent);
     }
 
 #if UNITY_EDITOR

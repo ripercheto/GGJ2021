@@ -10,7 +10,37 @@ public class Dungeon : MonoBehaviour
     public EnemySpawner[] spawners;
     public Transform[] possibleItemPositions;
 
+    public GameObject gate;
+    public PlayerTrigger entranceTrigger;
+
     private LostItem lostItemInstance;
+    private bool runStarted;
+
+    private void Awake()
+    {
+        entranceTrigger.onEnter.AddListener(PlayerEntered);
+    }
+
+    private void PlayerEntered()
+    {
+        if (!runStarted)
+        {
+            gate.SetActive(true);
+            runStarted = true;
+
+            ActivateSpawners();
+            SpawnItemAtRandomLocation();
+        }
+        else if (Game.Player.carryingItem != null)
+        {
+            CleanUp();
+
+            //came back with item.
+            gate.SetActive(false);
+            runStarted = false;
+        }
+    }
+
     public void ActivateSpawners()
     {
         foreach (var spawner in spawners)
