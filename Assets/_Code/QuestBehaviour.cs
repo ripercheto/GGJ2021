@@ -82,7 +82,7 @@ public class QuestBehaviour : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
 
         print("OnTriggerEnter");
-        if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
+        //if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
 
         if (FirstEncounter) {
             InitNextCustomer();
