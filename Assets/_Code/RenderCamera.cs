@@ -34,8 +34,6 @@ public class RenderCamera : MonoBehaviour
         get
         {
             var mousePos = Input.mousePosition;
-            //mousePos.x /= RenderCamera.instance.scaleFactor;
-            //mousePos.y /= (RenderCamera.instance.yFactor * RenderCamera.instance.scaleFactor);
             mousePos.x /= RenderCamera.instance.xFactor;
             mousePos.y /= RenderCamera.instance.yFactor;
             return mousePos;

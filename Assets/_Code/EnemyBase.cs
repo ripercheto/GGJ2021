@@ -9,10 +9,14 @@ public class EnemyBase : Pawn
     public NavMeshAgent agent;
     [Header("Ranges")]
     public float detectRange = 12;
-    public float attackRange = 2;
+    public float attackRange = 3;
+    public float stoppingDistance = 2;
+    public float inStoppingDistanceAcceleration = 50;
     [Header("Attack")]
     public float attackRadius = 45f;
     public float attackAnticipationTime = 0.15f;
+
+    private float accelerationDefault;
 
     private Vector3 lastHitDir;
 
@@ -22,14 +26,19 @@ public class EnemyBase : Pawn
     {
         base.Awake();
         agent.speed = stats.movementSpeed;
-        agent.stoppingDistance = attackRange;
+        //agent.stoppingDistance = stoppingDistance;
+        accelerationDefault = agent.acceleration;
+        Vector3 randPos = Random.insideUnitCircle;
+        randPos.y = 0;
+        randPos *= 3;
+        agent.SetDestination(transform.position + randPos);
     }
 
     private void Update()
     {
         HandleAttackCooldown();
 
-        if (IsKnockedBack)
+        if (IsKnockedBack || isAttacking)
         {
             return;
         }
@@ -41,7 +50,9 @@ public class EnemyBase : Pawn
         dirToPlayer.y = 0;
         var distToPlayer = dirToPlayer.magnitude;
 
-        if (distToPlayer >= detectRange)
+        agent.acceleration = distToPlayer < stoppingDistance ? inStoppingDistanceAcceleration : accelerationDefault;
+
+        if (distToPlayer > detectRange)
         {
             return;
         }
@@ -56,7 +67,7 @@ public class EnemyBase : Pawn
             return;
         }
 
-        if (distToPlayer >= attackRange)
+        if (distToPlayer > attackRange)
         {
             return;
         }
@@ -115,6 +126,8 @@ public class EnemyBase : Pawn
     {
         base.OnHit(force, damage);
         lastHitDir = force.normalized;
+        animator.ResetTrigger("Attack");
+        animator.Play("Idle", 0);
     }
 
     protected override void OnDeath()
@@ -127,6 +140,7 @@ public class EnemyBase : Pawn
     {
         base.PrepareAttack(dir);
         animator.SetTrigger("Attack");
+        agent.SetDestination(transform.position);
     }
 
     protected override IEnumerator _Attack(Vector3 dir)

@@ -9,7 +9,8 @@ partial class PlayerController
     public float attackTriggerDirOffset = 1;
 
     public float attackMovementForce = 20;
-    public float attackDuration = 0.1f;
+    public float attackDurationFailSafeTime = 0.1f;
+    public float attackTravelDistance = 0.1f;
 
     private List<EnemyBase> hitEnemies = new List<EnemyBase>();
 
@@ -43,10 +44,15 @@ partial class PlayerController
     {
         PrepareAttack(dir);
 
+        var startPos = transform.position;
+
         var t = 0f;
         hitEnemies.Clear();
-        while (t < attackDuration)
+        var dist = 0f;
+        while (dist < attackTravelDistance && t < attackDurationFailSafeTime)
         {
+            var travelVector = transform.position - startPos;
+            dist = travelVector.magnitude;
             t += Time.deltaTime;
             //body.AddForce(dir * attackMovementDistance, ForceMode.VelocityChange);
 
