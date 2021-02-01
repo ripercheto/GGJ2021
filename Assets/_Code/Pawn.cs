@@ -36,6 +36,7 @@ public abstract class Pawn : MonoBehaviour
     protected virtual void OnDeath()
     {
         isDead = true;
+        animator.enabled = false;
     }
     public virtual void OnHit(Vector3 force, float damage)
     {
@@ -110,6 +111,7 @@ public abstract class Pawn : MonoBehaviour
         IsKnockedBack = false;
         body.constraints = defaultConstraints;
         body.AddForce(Vector3.zero, ForceMode.VelocityChange);
+        body.AddTorque(Vector3.zero, ForceMode.VelocityChange);
     }
 
     public void CancelKnockback(bool shouldEnd)

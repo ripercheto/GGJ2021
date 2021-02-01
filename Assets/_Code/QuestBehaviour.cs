@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class QuestBehaviour : MonoBehaviour
 {
+    public static QuestBehaviour instance;
+
     public static bool QuestInProgress;
     public static bool inTrigger;
     //Requested item
@@ -23,6 +25,11 @@ public class QuestBehaviour : MonoBehaviour
     public Sprite Unhappy_Icon;
     public Sprite Happy_Icon;
     int CurrentSatisfactionSlot = 0;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start() {
         //LostItem_UI.sprite = LostItem.icon;
@@ -44,8 +51,12 @@ public class QuestBehaviour : MonoBehaviour
     }
     void CompareFoundItem(Item a_FoundItem) {
         //print("Found item: "+ a_FoundItem.name);
-        
-        bool LostItemIsFound = LostItem == a_FoundItem;
+
+        bool LostItemIsFound = false;
+        if (a_FoundItem != null)
+        {
+            LostItemIsFound = LostItem == a_FoundItem;
+        }
 
         //Set the satisfaction image depending on found or lost...  
         Sprite CurrentSatisfaction = LostItemIsFound ? Happy_Icon : Unhappy_Icon;
@@ -55,6 +66,7 @@ public class QuestBehaviour : MonoBehaviour
         if (ListOfCustomers.Count > 0) { //Running function without customer
             ListOfCustomers[0].SendHome(CurrentSatisfaction);
             ListOfCustomers.Remove(ListOfCustomers[0]);
+            QuestInProgress = false;
         }
     }
 
@@ -88,26 +100,23 @@ public class QuestBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
 
-        if (QuestInProgress)
+        if (GameOver(CurrentSatisfactionSlot))
         {
-            //check if it is the right item
-
+            print("GAME OVER!!!");
             return;
         }
-        print("OnTriggerEnter");
-        //if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
-        
-        //Deliver the found object
-        CompareFoundItem(GetRandomItem());
 
-        //Select next satisfaction slot...
-        CurrentSatisfactionSlot++;
-        if (GameOver(CurrentSatisfactionSlot) == true) {
-            print("GAME OVER!!!");
+        if (QuestInProgress)
+        {
+            if (Dungeon.InProgress)
+            {
+                Progress(Game.Player.carryingItem);
+            }
+            return;
         }
-        else {
-            InitNextCustomer();
-        }
+
+        Progress(GetRandomItem());
+
     }
     private void OnTriggerStay(Collider other)
     {
@@ -116,6 +125,12 @@ public class QuestBehaviour : MonoBehaviour
             inTrigger = true;
         }
     }
+        public void Progress(Item item)
+        {
+            //Deliver the found object
+            CompareFoundItem(item);
+            InitNextCustomer();
+        }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == 10)

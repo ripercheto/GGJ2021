@@ -77,10 +77,13 @@ public partial class PlayerController : Pawn
 
     public void ResetPlayer(Vector3 targetPos)
     {
+        isDead = false;
+        carryingItem = null;
         currentHealth = Stats.Health;
         UpdateHealthBar();
         CancelAttack(true);
         CancelKnockback(true);
+        animator.enabled = true;
         transform.position = targetPos;
     }
 
@@ -134,7 +137,6 @@ public partial class PlayerController : Pawn
         base.OnDeath();
         //try again
         carryingItem = null;
-        ResetPlayer(Game.Dungeon.playerSpawnPos.position);
         Game.Dungeon.OnPlayerDied();
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Dungeon : MonoBehaviour
 {
+    public static bool InProgress;
     public LostItem lostItemPrefab;
 
     public Transform playerSpawnPos;
@@ -14,7 +15,6 @@ public class Dungeon : MonoBehaviour
     public PlayerTrigger entranceTrigger;
 
     private LostItem lostItemInstance;
-    private bool runStarted;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class Dungeon : MonoBehaviour
 
     private void PlayerEntered()
     {
-        if (!runStarted)
+        if (!InProgress)
         {
             StartRun();
         }
@@ -36,7 +36,7 @@ public class Dungeon : MonoBehaviour
     void StartRun()
     {
         gate.SetActive(true);
-        runStarted = true;
+        InProgress = true;
 
         ActivateSpawners();
         SpawnItemAtRandomLocation();
@@ -48,7 +48,7 @@ public class Dungeon : MonoBehaviour
 
         //came back with item.
         gate.SetActive(false);
-        runStarted = false;
+        InProgress = false;
     }
 
     public void ActivateSpawners()
@@ -91,6 +91,9 @@ public class Dungeon : MonoBehaviour
 
     internal void OnPlayerDied()
     {
+        //tp
+        Game.Player.ResetPlayer(playerSpawnPos.position);
+        QuestBehaviour.instance.Progress(null);
         EndRun();
     }
 }

@@ -1249,7 +1249,7 @@ PrefabInstance:
     - target: {fileID: 3537160774005701191, guid: 2e8e34a52f36c494f98481bf71339d49,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 154.32
+      value: 155.44
       objectReference: {fileID: 0}
     - target: {fileID: 3557245058436069569, guid: 2e8e34a52f36c494f98481bf71339d49,
         type: 3}
@@ -2022,7 +2022,7 @@ PrefabInstance:
     - target: {fileID: 4633072416061944996, guid: 35876b165335eec48b4f29ce32ea77c1,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.20538151
+      value: 0.2052235
       objectReference: {fileID: 0}
     - target: {fileID: 4633072416472893078, guid: 35876b165335eec48b4f29ce32ea77c1,
         type: 3}
@@ -3372,6 +3372,21 @@ PrefabInstance:
       propertyPath: Slots_UI.Array.data[4]
       value: 
       objectReference: {fileID: 407455309}
+    - target: {fileID: 698500213289713047, guid: 082f3833ee67f0b43bcaa1ee89363a4f,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 10.273946
+      objectReference: {fileID: 0}
+    - target: {fileID: 698500213289713047, guid: 082f3833ee67f0b43bcaa1ee89363a4f,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -4.1369743
+      objectReference: {fileID: 0}
+    - target: {fileID: 698500213289713047, guid: 082f3833ee67f0b43bcaa1ee89363a4f,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 0.6491108
+      objectReference: {fileID: 0}
     - target: {fileID: 4410409101983819291, guid: 082f3833ee67f0b43bcaa1ee89363a4f,
         type: 3}
       propertyPath: m_Name
@@ -3481,7 +3496,7 @@ RenderTexture:
     m_WrapW: 1
   m_Dimension: 2
   m_VolumeDepth: 1
---- !u!84 &2142711528
+--- !u!84 &2110229845
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3495,7 +3510,7 @@ RenderTexture:
   m_DownscaleFallback: 0
   serializedVersion: 3
   m_Width: 274
-  m_Height: 206
+  m_Height: 154
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthFormat: 0
