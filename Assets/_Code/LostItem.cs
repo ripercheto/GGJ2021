@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class LostItem : MonoBehaviour
 {
-    public Item item;
-
+    public Item Item
+    {
+        get => Item;
+        set
+        {
+            item = value;
+            if (item != null)
+            {
+                lostItemSprite.sprite = item.icon;
+            }
+        }
+    }
+    private Item item;
+    public SpriteRenderer lostItemSprite;
     private void Awake()
     {
         var randPos = Random.insideUnitSphere;

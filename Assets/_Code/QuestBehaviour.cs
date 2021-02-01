@@ -108,10 +108,7 @@ public class QuestBehaviour : MonoBehaviour
 
         if (QuestInProgress)
         {
-            if (Dungeon.InProgress)
-            {
-                Progress(Game.Player.carryingItem);
-            }
+            Progress(Game.Player.carryingItem);
             return;
         }
 
@@ -125,12 +122,13 @@ public class QuestBehaviour : MonoBehaviour
             inTrigger = true;
         }
     }
-        public void Progress(Item item)
-        {
-            //Deliver the found object
-            CompareFoundItem(item);
-            InitNextCustomer();
-        }
+    public void Progress(Item item)
+    {
+        //Deliver the found object
+        CompareFoundItem(item);
+        InitNextCustomer();
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == 10)

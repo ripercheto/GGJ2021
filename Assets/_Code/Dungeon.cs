@@ -73,7 +73,7 @@ public class Dungeon : MonoBehaviour
         }
         random = Random.Range(0, itemCount);
 
-        lostItemInstance.item = Game.Settings.AvailableItems[random];
+        lostItemInstance.Item = Game.Settings.AvailableItems[random];
     }
 
     public void CleanUp()
