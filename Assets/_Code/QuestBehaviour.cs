@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class QuestBehaviour : MonoBehaviour
 {
+    public static bool QuestInProgress;
+    public static bool inTrigger;
     //Requested item
-    bool FirstEncounter = true;
-    Item LostItem;
+    public static Item LostItem;
 
     [Header("Basic settings")]
     public Image LostItem_UI; //Target to draw lost items on
@@ -26,12 +27,13 @@ public class QuestBehaviour : MonoBehaviour
     void Start() {
         //LostItem_UI.sprite = LostItem.icon;
         ResetSatisfactionUI();
+
+        InitNextCustomer();
     }
     void ResetSatisfactionUI() {
         foreach (Image IconSlot in Slots_UI) {
             IconSlot.sprite = Unknown_Icon;
         }
-        
     }
 
     void SetLostItem(Item a_Item) {
@@ -57,7 +59,12 @@ public class QuestBehaviour : MonoBehaviour
     }
 
     void InitNextCustomer() {
-  
+        if (QuestInProgress)
+        {
+            //1 at a time
+            return;
+        }
+        QuestInProgress = true;
         SetLostItem(GetRandomItem()); //Pick a random lost item
 
         CustomerBehaviour NewCustomer = Instantiate(CustomerPrefab, CustomerSpawnPoint); //Create new customer
@@ -81,14 +88,14 @@ public class QuestBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
 
-        print("OnTriggerEnter");
-        //if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
+        if (QuestInProgress)
+        {
+            //check if it is the right item
 
-        if (FirstEncounter) {
-            InitNextCustomer();
-            FirstEncounter = false;
             return;
         }
+        print("OnTriggerEnter");
+        //if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
         
         //Deliver the found object
         CompareFoundItem(GetRandomItem());
@@ -102,7 +109,20 @@ public class QuestBehaviour : MonoBehaviour
             InitNextCustomer();
         }
     }
-
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == 10)
+        {
+            inTrigger = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 10)
+        {
+            inTrigger = false;
+        }
+    }
     //Temporary reset function
     //void InSlotBounds() {
     //    if (CurrentSatisfactionSlot > 4) {

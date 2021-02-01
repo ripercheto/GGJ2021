@@ -223,6 +223,11 @@ PrefabInstance:
       propertyPath: LostItem_UI
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4523862797842626993, guid: 26db9515398e127448f75119f01bdd94,
+        type: 3}
+      propertyPath: Slots_UI.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4523862797842626997, guid: 26db9515398e127448f75119f01bdd94,
         type: 3}
       propertyPath: m_RootOrder
@@ -277,6 +282,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4523862797842626998, guid: 26db9515398e127448f75119f01bdd94,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26db9515398e127448f75119f01bdd94, type: 3}

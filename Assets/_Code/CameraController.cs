@@ -54,6 +54,12 @@ public class CameraController : MonoBehaviour
     private void LateUpdate()
     {
         var p = Game.Player;
+        if (QuestBehaviour.inTrigger)//questing area
+        {
+            transform.position = Vector3.Lerp(transform.position, p.transform.position - (Vector3.forward * 5)+ offset, Settings.mainMoveLerpFactor * Time.deltaTime);
+            return;
+        }
+
         //regular movement
         transform.position = Vector3.Lerp(transform.position, p.transform.position + offset, Settings.mainMoveLerpFactor * Time.deltaTime);
 
